@@ -15,8 +15,8 @@ import {
 } from "@core/components/ui/popover";
 import { useDebounce } from "@/core/hooks/use-debounce";
 import { useEffect, useState } from "react";
-import { useSearchCityQuery } from "@/features/weather/lib/hooks/use-search-city-query";
-import type { SearchCity } from "@/core/types/weather";
+import { useSearchCityGeocodingQuery } from "@/features/weather/lib/hooks/use-search-city-geocoding-query";
+import type { CityGeocoding } from "@/core/types/weather";
 import {
   InputGroup,
   InputGroupAddon,
@@ -26,18 +26,24 @@ import {
 export function SearchCityCombobox({
   onSelect,
 }: {
-  onSelect: (city: SearchCity) => void;
+  onSelect: (city: CityGeocoding) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const debounced = useDebounce(search.trim(), 300);
-  const searchCityQuery = useSearchCityQuery(debounced);
+  const searchCityGeocodingQuery = useSearchCityGeocodingQuery(debounced);
 
   useEffect(() => {
-    if (searchCityQuery.isSuccess && searchCityQuery.data?.length > 0) {
+    if (
+      searchCityGeocodingQuery.isSuccess &&
+      searchCityGeocodingQuery.data?.length > 0
+    ) {
       setOpen(true);
     }
-  }, [searchCityQuery.isSuccess, searchCityQuery.data?.length]);
+  }, [
+    searchCityGeocodingQuery.isSuccess,
+    searchCityGeocodingQuery.data?.length,
+  ]);
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
@@ -50,7 +56,7 @@ export function SearchCityCombobox({
     setSearch(e.target.value);
   };
 
-  const handleSelect = (city: SearchCity) => {
+  const handleSelect = (city: CityGeocoding) => {
     setSearch("");
     setOpen(false);
     onSelect(city);
@@ -76,7 +82,7 @@ export function SearchCityCombobox({
           </InputGroupAddon>
 
           <InputGroupAddon align="inline-end">
-            {searchCityQuery.isLoading && search.length > 0 && (
+            {searchCityGeocodingQuery.isLoading && search.length > 0 && (
               <Loader2 className="animate-spin" />
             )}
           </InputGroupAddon>
@@ -90,23 +96,23 @@ export function SearchCityCombobox({
       >
         <Command shouldFilter={false}>
           <CommandList>
-            {searchCityQuery.isError && (
+            {searchCityGeocodingQuery.isError && (
               <div className="p-3 text-sm text-red-500">
-                {searchCityQuery.error.message}
+                {searchCityGeocodingQuery.error.message}
               </div>
             )}
 
-            {!searchCityQuery.isLoading &&
-              !searchCityQuery.isError &&
-              searchCityQuery.data?.length === 0 &&
+            {!searchCityGeocodingQuery.isLoading &&
+              !searchCityGeocodingQuery.isError &&
+              searchCityGeocodingQuery.data?.length === 0 &&
               search.length > 0 && (
                 <CommandEmpty>No results found.</CommandEmpty>
               )}
 
             <CommandGroup>
-              {searchCityQuery.data?.map((item) => (
+              {searchCityGeocodingQuery.data?.map((item) => (
                 <CommandItem
-                  key={item.id}
+                  key={`${item.name}-${item.country}`}
                   value={`${item.name}, ${item.country}`}
                   onSelect={() => handleSelect(item)}
                 >

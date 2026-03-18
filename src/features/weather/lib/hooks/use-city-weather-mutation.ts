@@ -1,17 +1,17 @@
 import { weatherApi } from "@/features/weather/lib/api/weather";
-import { recentSearchCitiesQueryKeys } from "@/features/weather/lib/hooks/use-recent-search-cities-query";
-import type { CityWeather } from "@/features/weather/lib/types";
+import { recentSearchQueryKeys } from "@/features/weather/lib/hooks/use-recent-search-query";
+import type { CityWeather } from "@core/types/weather";
 import {
   useMutation,
   useQueryClient,
   type UseMutationOptions,
 } from "@tanstack/react-query";
 
-export const fetchCityWeatherMutationKeys = {
+export const cityWeatherMutationKeys = {
   all: ["fetch-city-weather"] as const,
 };
 
-export const useFetchCityWeatherMutation = (
+export const useCityWeatherMutation = (
   options?: Omit<
     UseMutationOptions<CityWeather, Error, { lat: number; lon: number }>,
     "mutationFn"
@@ -19,11 +19,11 @@ export const useFetchCityWeatherMutation = (
 ) => {
   const queryClient = useQueryClient();
   return useMutation<CityWeather, Error, { lat: number; lon: number }>({
-    mutationKey: fetchCityWeatherMutationKeys.all,
-    mutationFn: ({ lat, lon }) => weatherApi.fetch(lat, lon),
+    mutationKey: cityWeatherMutationKeys.all,
+    mutationFn: ({ lat, lon }) => weatherApi.fetchCityWeather(lat, lon),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: recentSearchCitiesQueryKeys.all,
+        queryKey: recentSearchQueryKeys.all,
       });
     },
     ...options,

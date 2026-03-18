@@ -7,19 +7,19 @@ import {
   CardTitle,
 } from "@/core/components/ui/card";
 import { Button } from "@/core/components/ui/button";
-import type { SearchCity, CityWeather } from "@core/types/weather";
-import { useRecentSearchCitiesQuery } from "@/features/weather/lib/hooks/use-recent-search-cities-query";
-import { useFetchCityWeatherMutation } from "@/features/weather/lib/hooks/use-fetch-city-weather-mutation";
+import type { CityGeocoding, CityWeather } from "@core/types/weather";
+import { useRecentSearchQuery } from "@/features/weather/lib/hooks/use-recent-search-query";
+import { useCityWeatherMutation } from "@/features/weather/lib/hooks/use-city-weather-mutation";
 import { SearchCityCombobox } from "@/features/weather/lib/components/search-city-combobox";
 
 export function Weather() {
-  const recentSearchCitiesQuery = useRecentSearchCitiesQuery();
-  const fetchCityWeatherMutation = useFetchCityWeatherMutation();
+  const recentSearchQuery = useRecentSearchQuery();
+  const cityWeatherMutation = useCityWeatherMutation();
 
   const onSelect = useCallback(
-    async (city: SearchCity) => {
+    async (city: CityGeocoding) => {
       try {
-        const data = await fetchCityWeatherMutation.mutateAsync({
+        const data = await cityWeatherMutation.mutateAsync({
           lat: city.lat,
           lon: city.lon,
         });
@@ -28,7 +28,7 @@ export function Weather() {
         // ignore
       }
     },
-    [fetchCityWeatherMutation],
+    [cityWeatherMutation],
   );
 
   const onSelectRecent = (c: CityWeather) => {
@@ -78,23 +78,23 @@ export function Weather() {
       <Card className="shrink-0">
         <CardHeader>
           <CardTitle>Recent</CardTitle>
-          <CardDescription>Searched locations</CardDescription>
+          <CardDescription>Recent searched cities</CardDescription>
         </CardHeader>
         <CardContent>
-          {recentSearchCitiesQuery.data?.length === 0 ? (
+          {recentSearchQuery.data?.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               Search for cities to see them here
             </p>
           ) : (
             <div className="flex flex-col gap-2">
-              {recentSearchCitiesQuery.data?.map((c) => (
+              {recentSearchQuery.data?.map((c) => (
                 <Button
                   key={c.id}
                   variant="outline"
                   className="h-auto justify-start py-3"
                   onClick={() => onSelectRecent(c)}
                 >
-                  {c.name}, {c.country} — {c.temp}°C
+                  {c.name}, {c.sys.country} — {c.main.temp}°C
                 </Button>
               ))}
             </div>

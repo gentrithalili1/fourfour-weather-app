@@ -1,15 +1,15 @@
 import { DurableObject } from "cloudflare:workers";
-import type { WeatherData } from "./openweather";
+import type { CityWeather } from "@core/types/weather";
 
-const MAX_RECENT = 5;
+const MAX_RECENT = 3;
 
 export class WeatherSync extends DurableObject<Env> {
-  private recent: WeatherData[] = [];
+  private recent: CityWeather[] = [];
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
     this.ctx.blockConcurrencyWhile(async () => {
-      const stored = await this.ctx.storage.get<WeatherData[]>("recent");
+      const stored = await this.ctx.storage.get<CityWeather[]>("recent");
       if (stored) this.recent = stored;
     });
   }
@@ -21,13 +21,15 @@ export class WeatherSync extends DurableObject<Env> {
       return Response.json(this.recent);
     }
 
-    if (url.pathname === "/api/add" && request.method === "POST") {
-      const city = (await request.json()) as WeatherData;
+    if (url.pathname === "/api/weather/add" && request.method === "POST") {
+      const city = (await request.json()) as CityWeather;
       this.recent = [
         city,
         ...this.recent.filter((c) => c.id !== city.id),
       ].slice(0, MAX_RECENT);
+
       await this.ctx.storage.put("recent", this.recent);
+
       return Response.json({ ok: true });
     }
 

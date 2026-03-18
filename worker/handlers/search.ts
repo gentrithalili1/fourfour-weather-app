@@ -1,24 +1,34 @@
-import { API_PATHS } from "../constants";
-import { searchCities } from "../openweather";
+import type { CityGeocoding } from "@core/types/weather";
+import { OPENWEATHER } from "../utils/constants";
 
 export async function handleSearch(
   request: Request,
-  getApiKey: () => string | null
-): Promise<Response | null> {
+  getApiKey: () => string | null,
+): Promise<Response> {
   const url = new URL(request.url);
-  if (url.pathname !== API_PATHS.SEARCH || request.method !== "GET") {
-    return null;
-  }
-
   const q = url.searchParams.get("q");
   const apiKey = getApiKey();
   if (!q?.trim() || !apiKey) {
     return Response.json(
       { error: "Missing query or API key" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
-  const data = await searchCities(q.trim(), apiKey);
+  const data = await searchCityGeocoding(q.trim(), apiKey);
   return Response.json(data);
+}
+
+async function searchCityGeocoding(
+  query: string,
+  apiKey: string,
+): Promise<CityGeocoding[]> {
+  const url = `${OPENWEATHER.GEO}?q=${encodeURIComponent(query)}&limit=5&appid=${apiKey}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    const data = (await res.json()) as { message?: string };
+    throw new Error(data?.message ?? "Geocoding failed");
+  }
+
+  return (await res.json()) as CityGeocoding[];
 }

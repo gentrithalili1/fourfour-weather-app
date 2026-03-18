@@ -2,14 +2,14 @@ import { weatherApi } from "@/features/weather/lib/api/weather";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-export const searchCityQueryKeys = {
+export const searchCityGeocodingQueryKeys = {
   search: (query: string) => ["search-city", query] as const,
 };
 
-export const useSearchCityQuery = (searchTerm: string) => {
+export const useSearchCityGeocodingQuery = (searchTerm: string) => {
   const query = useQuery({
-    queryKey: searchCityQueryKeys.search(searchTerm),
-    queryFn: () => weatherApi.search(searchTerm),
+    queryKey: searchCityGeocodingQueryKeys.search(searchTerm),
+    queryFn: () => weatherApi.searchCityGeocoding(searchTerm),
     enabled: searchTerm.length > 0,
   });
 

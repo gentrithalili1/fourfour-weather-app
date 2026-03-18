@@ -1,32 +1,38 @@
-import { WeatherSync } from "./WeatherSync";
+import { API_PATHS } from "./utils/constants";
 import { handleSearch } from "./handlers/search";
 import { handleFetch } from "./handlers/weather";
 import { handleRecent } from "./handlers/recent";
+import { getApiKey } from "./utils/get-api-key";
+import { getDoStub } from "./utils/get-do-stub";
+import { WeatherSync } from "./WeatherSync";
 
 export { WeatherSync };
 
-function getApiKey(env: Env): string | null {
-  return env.OPENWEATHER_API_KEY?.trim() || null;
-}
-
-function getDoStub(env: Env): DurableObjectStub {
-  const id = env.WEATHER_SYNC.idFromName("global");
-  return env.WEATHER_SYNC.get(id);
+function match(request: Request, path: string, method: string): boolean {
+  const url = new URL(request.url);
+  return url.pathname === path && request.method === method;
 }
 
 export default {
   async fetch(request: Request, env: Env) {
-    const searchRes = await handleSearch(request, () => getApiKey(env));
-    if (searchRes !== null) return searchRes;
+    const getKey = () => getApiKey(env);
+    const getStub = () => getDoStub(env);
 
-    const fetchRes = await handleFetch(request, () => getApiKey(env), () =>
-      getDoStub(env)
-    );
-    if (fetchRes !== null) return fetchRes;
+    if (match(request, API_PATHS.SEARCH, "GET")) {
+      return handleSearch(request, getKey);
+    }
 
-    const recentRes = await handleRecent(request, () => getDoStub(env));
-    if (recentRes !== null) return recentRes;
+    if (match(request, API_PATHS.FETCH, "POST")) {
+      return handleFetch(request, getKey, getStub);
+    }
 
-    return new Response(null, { status: 404 });
+    if (match(request, API_PATHS.RECENT, "GET")) {
+      return handleRecent(request, getStub);
+    }
+
+    return new Response(JSON.stringify({ error: "Not found" }), {
+      status: 404,
+      headers: { "Content-Type": "application/json" },
+    });
   },
 } satisfies ExportedHandler<Env>;
