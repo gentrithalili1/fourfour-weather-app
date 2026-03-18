@@ -1,25 +1,11 @@
 import { useCallback } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import type { CityGeocoding, CityWeather } from "@core/types/weather";
-import { useRecentSearchQuery } from "@/features/weather/lib/hooks/use-recent-search-query";
+import type { CityGeocoding } from "@core/types/weather";
 import { useCityWeatherMutation } from "@/features/weather/lib/hooks/use-city-weather-mutation";
 import { SearchCityCombobox } from "@/features/weather/lib/components/search-city-combobox";
-import { useClearRecentSearchMutation } from "@/features/weather/lib/hooks/use-clear-recent-search-mutation";
-import { Trash2 } from "lucide-react";
-import { Spinner } from "@/core/components/ui/spinner";
+import { RecentSearch } from "@/features/weather/lib/components/recent-search";
 
 export function Weather() {
-  const recentSearchQuery = useRecentSearchQuery();
   const cityWeatherMutation = useCityWeatherMutation();
-  const clearRecentMutation = useClearRecentSearchMutation();
 
   const onSelect = useCallback(
     async (city: CityGeocoding) => {
@@ -36,25 +22,9 @@ export function Weather() {
     [cityWeatherMutation],
   );
 
-  const onSelectRecent = (c: CityWeather) => {
-    console.log("c", c);
-  };
-
   return (
     <div className="flex min-h-full flex-1 flex-col gap-6 p-6 lg:p-8">
-      <div className="shrink-0 flex justify-center">
-        <SearchCityCombobox onSelect={onSelect} />
-
-        {/* <div className="relative w-full max-w-xl">
-          <Search className="absolute left-5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search city..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="h-12 pl-12 text-base"
-          />
-        </div> */}
-      </div>
+      <SearchCityCombobox onSelect={onSelect} />
 
       {/* {selected && (
         <>
@@ -80,46 +50,7 @@ export function Weather() {
         </>
       )} */}
 
-      <Card className="shrink-0">
-        <CardHeader>
-          <CardTitle>Recent</CardTitle>
-          <CardDescription>Recent searched cities</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {recentSearchQuery.data?.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              Search for cities to see them here
-            </p>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {recentSearchQuery.data?.map((c) => (
-                <Button
-                  key={c.id}
-                  variant="outline"
-                  className="h-auto justify-start py-3"
-                  onClick={() => onSelectRecent(c)}
-                >
-                  {c.name}, {c.sys.country} — {c.main.temp}°C
-                </Button>
-              ))}
-            </div>
-          )}
-        </CardContent>
-
-        <CardFooter>
-          <Button
-            disabled={clearRecentMutation.isPending}
-            variant="destructive"
-            size="sm"
-            onClick={() => clearRecentMutation.mutate()}
-          >
-            {clearRecentMutation.isPending ? (
-              <Spinner className="size-4" data-icon="inline-start" />
-            ) : null}
-            Clear
-          </Button>
-        </CardFooter>
-      </Card>
+      <RecentSearch />
     </div>
   );
 }
