@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Search, Cloud } from "lucide-react";
+import { useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -7,44 +6,41 @@ import {
   CardHeader,
   CardTitle,
 } from "@/core/components/ui/card";
-import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
-import { useDebounce } from "@core/hooks/use-debounce";
 import type { SearchCity, CityWeather } from "@core/types/weather";
-import { useSearchCityQuery } from "@/features/weather/lib/hooks/use-search-city-query";
 import { useRecentSearchCitiesQuery } from "@/features/weather/lib/hooks/use-recent-search-cities-query";
 import { useFetchCityWeatherMutation } from "@/features/weather/lib/hooks/use-fetch-city-weather-mutation";
+import { SearchCityCombobox } from "@/features/weather/lib/components/search-city-combobox";
 
 export function Weather() {
-  const [search, setSearch] = useState("");
-  const [selected, setSelected] = useState<CityWeather | null>(null);
-  const debounced = useDebounce(search.trim(), 300);
-
-  const searchCityQuery = useSearchCityQuery(debounced);
   const recentSearchCitiesQuery = useRecentSearchCitiesQuery();
   const fetchCityWeatherMutation = useFetchCityWeatherMutation();
 
-  const onSelect = async (city: SearchCity) => {
-    try {
-      const data = await fetchCityWeatherMutation.mutateAsync({
-        lat: city.lat,
-        lon: city.lon,
-      });
-      setSelected(data);
-      setSearch("");
-    } catch {
-      // ignore
-    }
-  };
+  const onSelect = useCallback(
+    async (city: SearchCity) => {
+      try {
+        const data = await fetchCityWeatherMutation.mutateAsync({
+          lat: city.lat,
+          lon: city.lon,
+        });
+        console.log("data", data);
+      } catch {
+        // ignore
+      }
+    },
+    [fetchCityWeatherMutation],
+  );
 
   const onSelectRecent = (c: CityWeather) => {
-    setSelected(c);
+    console.log("c", c);
   };
 
   return (
     <div className="flex min-h-full flex-1 flex-col gap-6 p-6 lg:p-8">
       <div className="shrink-0 flex justify-center">
-        <div className="relative w-full max-w-xl">
+        <SearchCityCombobox onSelect={onSelect} />
+
+        {/* <div className="relative w-full max-w-xl">
           <Search className="absolute left-5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search city..."
@@ -52,44 +48,10 @@ export function Weather() {
             onChange={(e) => setSearch(e.target.value)}
             className="h-12 pl-12 text-base"
           />
-        </div>
+        </div> */}
       </div>
 
-      {debounced && (
-        <Card className="mx-auto w-full max-w-xl">
-          <CardHeader>
-            <CardTitle>Search results</CardTitle>
-            <CardDescription>
-              {searchCityQuery.isFetching
-                ? "Searching..."
-                : `${searchCityQuery.data?.length} cities found`}
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent>
-            {searchCityQuery.data?.length === 0 &&
-            !searchCityQuery.isFetching ? (
-              <p className="text-sm text-muted-foreground">No results</p>
-            ) : (
-              <div className="flex flex-col gap-2">
-                {searchCityQuery.data?.map((c) => (
-                  <Button
-                    key={c.id}
-                    variant="outline"
-                    className="h-auto justify-start py-3"
-                    onClick={() => onSelect(c)}
-                    disabled={fetchCityWeatherMutation.isPending}
-                  >
-                    {c.name}, {c.country}
-                  </Button>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {selected && (
+      {/* {selected && (
         <>
           <div className="relative flex min-h-0 flex-1 overflow-hidden rounded-2xl bg-gradient-to-br from-sky-500 via-blue-600 to-indigo-700 text-white shadow-2xl ring-1 ring-white/10 dark:from-sky-600 dark:via-blue-700 dark:to-indigo-800">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.2),transparent)]" />
@@ -111,7 +73,7 @@ export function Weather() {
             </div>
           </div>
         </>
-      )}
+      )} */}
 
       <Card className="shrink-0">
         <CardHeader>
