@@ -21,6 +21,12 @@ export class WeatherSync extends DurableObject<Env> {
       return Response.json(this.recent);
     }
 
+    if (url.pathname === "/api/recent" && request.method === "DELETE") {
+      this.recent = [];
+      await this.ctx.storage.put("recent", this.recent);
+      return Response.json({ ok: true });
+    }
+
     if (url.pathname === "/api/weather/add" && request.method === "POST") {
       const city = (await request.json()) as CityWeather;
       this.recent = [

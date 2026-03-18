@@ -5,6 +5,10 @@ const getRecentCityWeatherSearch = async () => {
   return apiRequest.get<CityWeather[]>(`/recent`);
 };
 
+const clearRecentSearch = async () => {
+  return apiRequest.delete<{ ok: boolean }>(`/recent`);
+};
+
 const fetchCityWeather = async (lat: number, lon: number) => {
   return apiRequest.post<CityWeather>(`/fetch`, { lat, lon });
 };
@@ -17,4 +21,5 @@ export const weatherApi = {
   searchCityGeocoding: searchCityGeocoding,
   fetchCityWeather: fetchCityWeather,
   getRecentSearch: getRecentCityWeatherSearch,
+  clearRecentSearch: clearRecentSearch,
 };

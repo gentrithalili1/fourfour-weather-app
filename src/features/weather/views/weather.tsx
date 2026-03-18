@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/core/components/ui/card";
@@ -11,10 +12,14 @@ import type { CityGeocoding, CityWeather } from "@core/types/weather";
 import { useRecentSearchQuery } from "@/features/weather/lib/hooks/use-recent-search-query";
 import { useCityWeatherMutation } from "@/features/weather/lib/hooks/use-city-weather-mutation";
 import { SearchCityCombobox } from "@/features/weather/lib/components/search-city-combobox";
+import { useClearRecentSearchMutation } from "@/features/weather/lib/hooks/use-clear-recent-search-mutation";
+import { Trash2 } from "lucide-react";
+import { Spinner } from "@/core/components/ui/spinner";
 
 export function Weather() {
   const recentSearchQuery = useRecentSearchQuery();
   const cityWeatherMutation = useCityWeatherMutation();
+  const clearRecentMutation = useClearRecentSearchMutation();
 
   const onSelect = useCallback(
     async (city: CityGeocoding) => {
@@ -100,6 +105,20 @@ export function Weather() {
             </div>
           )}
         </CardContent>
+
+        <CardFooter>
+          <Button
+            disabled={clearRecentMutation.isPending}
+            variant="destructive"
+            size="sm"
+            onClick={() => clearRecentMutation.mutate()}
+          >
+            {clearRecentMutation.isPending ? (
+              <Spinner className="size-4" data-icon="inline-start" />
+            ) : null}
+            Clear
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );

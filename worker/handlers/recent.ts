@@ -1,7 +1,7 @@
 export async function handleRecent(
-  _request: Request,
+  request: Request,
   getDoStub: () => DurableObjectStub,
 ): Promise<Response> {
   const stub = getDoStub();
-  return stub.fetch("https://do/api/recent");
+  return stub.fetch("https://do/api/recent", { method: request.method });
 }

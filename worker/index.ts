@@ -26,7 +26,10 @@ export default {
       return handleFetch(request, getKey, getStub);
     }
 
-    if (match(request, API_PATHS.RECENT, "GET")) {
+    if (
+      match(request, API_PATHS.RECENT, "GET") ||
+      match(request, API_PATHS.RECENT, "DELETE")
+    ) {
       return handleRecent(request, getStub);
     }
 
