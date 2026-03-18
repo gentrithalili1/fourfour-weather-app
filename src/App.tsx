@@ -1,7 +1,9 @@
+import { Weather } from "@features/weather/views/weather";
+
 function App() {
   return (
     <>
-      <p className="text-3xl text-red-500">Hello World</p>
+      <Weather />
     </>
   );
 }
