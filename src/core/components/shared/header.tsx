@@ -1,4 +1,5 @@
 import { ModeToggle } from "@/core/components/shared/mode-toggle";
+import { SettingsSheet } from "@/core/components/shared/settings-sheet";
 
 export function Header() {
   return (
@@ -6,7 +7,11 @@ export function Header() {
       <span className="text-2xl font-bold tracking-tight text-primary italic">
         44Weather
       </span>
-      <ModeToggle />
+
+      <div className="flex items-center gap-2">
+        <ModeToggle />
+        <SettingsSheet />
+      </div>
     </header>
   );
 }
