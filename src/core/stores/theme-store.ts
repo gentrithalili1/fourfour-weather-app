@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { generateStorageKey } from "@/core/utils/storage";
-
-export type Theme = "dark" | "light" | "system";
+import type { Theme } from "@/core/types/common";
 
 type ThemeStore = {
   theme: Theme;
