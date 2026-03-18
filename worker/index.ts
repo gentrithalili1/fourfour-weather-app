@@ -30,9 +30,6 @@ export default {
       return handleRecent(request, getStub);
     }
 
-    return new Response(JSON.stringify({ error: "Not found" }), {
-      status: 404,
-      headers: { "Content-Type": "application/json" },
-    });
+    return env.ASSETS.fetch(request);
   },
 } satisfies ExportedHandler<Env>;
