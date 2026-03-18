@@ -5,13 +5,31 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "fourfour-weather-app",
+	"main": "worker/index.ts",
 	"compatibility_date": "2026-03-17",
-	"pages_build_output_dir": "./dist",
+	"assets": {
+		"directory": "./dist/client",
+		"not_found_handling": "single-page-application"
+	},
 	"observability": {
 		"enabled": true
 	},
 	"compatibility_flags": [
 		"nodejs_compat"
+	],
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "WEATHER_SYNC",
+				"class_name": "WeatherSync"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["WeatherSync"]
+		}
 	]
 	/**
 	 * Smart Placement
