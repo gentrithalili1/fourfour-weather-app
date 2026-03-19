@@ -27,6 +27,6 @@ export const getWeatherGradient = (weather: CityWeather): string => {
 			return "from-slate-500 via-sky-600 to-indigo-700";
 
 		default:
-			return "from-sky-500 via-blue-600 to-indigo-700";
+			return "from-slate-500 via-sky-600 to-indigo-700";
 	}
 };
