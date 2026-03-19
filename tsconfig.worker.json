@@ -1,14 +1,14 @@
 {
-  "extends": "./tsconfig.node.json",
-  "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.worker.tsbuildinfo",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "@core/*": ["src/core/*"]
-    }
-  },
-  "include": ["worker", "src/core/types", "worker-configuration.d.ts"]
+	"extends": "./tsconfig.node.json",
+	"compilerOptions": {
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.worker.tsbuildinfo",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"baseUrl": ".",
+		"paths": {
+			"@core/*": ["src/core/*"]
+		}
+	},
+	"include": ["worker", "src/core/types", "worker-configuration.d.ts"]
 }

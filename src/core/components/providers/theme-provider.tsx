@@ -1,34 +1,33 @@
-import { useEffect, type ReactNode } from "react"
-import { useThemeStore } from "@core/stores/theme-store"
+import { useThemeStore } from "@core/stores/theme-store";
+import { useEffect, type ReactNode } from "react";
 
 type ThemeProviderProps = {
-  children: ReactNode
-}
+	children: ReactNode;
+};
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const theme = useThemeStore((s) => s.theme)
+	const theme = useThemeStore((s) => s.theme);
 
-  useEffect(() => {
-    const root = window.document.documentElement
+	useEffect(() => {
+		const root = window.document.documentElement;
 
-    root.classList.remove("light", "dark")
+		root.classList.remove("light", "dark");
 
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light"
+		if (theme === "system") {
+			const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+				? "dark"
+				: "light";
 
-      root.classList.add(systemTheme)
-      return
-    }
+			root.classList.add(systemTheme);
+			return;
+		}
 
-    root.classList.add(theme)
-  }, [theme])
+		root.classList.add(theme);
+	}, [theme]);
 
-  return <>{children}</>
+	return <>{children}</>;
 }
 
 export function useTheme() {
-  return useThemeStore()
+	return useThemeStore();
 }

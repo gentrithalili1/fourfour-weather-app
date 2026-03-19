@@ -1,25 +1,24 @@
-import type { CityGeocoding } from "@/core/types/weather";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
+import type { CityGeocoding } from "@/core/types/weather";
 import { generateStorageKey } from "@/core/utils/storage";
 
 type CityGeocodingState = {
-  cityGeocoding: CityGeocoding | null;
-  setCityGeocoding: (cityGeocoding: CityGeocoding | null) => void;
+	cityGeocoding: CityGeocoding | null;
+	setCityGeocoding: (cityGeocoding: CityGeocoding | null) => void;
 };
 
 type CityGeocodingActions = {
-  setCityGeocoding: (cityGeocoding: CityGeocoding | null) => void;
+	setCityGeocoding: (cityGeocoding: CityGeocoding | null) => void;
 };
 
-export const useCityGeocodingStore = create<
-  CityGeocodingState & CityGeocodingActions
->()(
-  persist(
-    (set) => ({
-      cityGeocoding: null,
-      setCityGeocoding: (cityGeocoding) => set({ cityGeocoding }),
-    }),
-    { name: generateStorageKey("city-geocoding") },
-  ),
+export const useCityGeocodingStore = create<CityGeocodingState & CityGeocodingActions>()(
+	persist(
+		(set) => ({
+			cityGeocoding: null,
+			setCityGeocoding: (cityGeocoding) => set({ cityGeocoding }),
+		}),
+		{ name: generateStorageKey("city-geocoding") }
+	)
 );

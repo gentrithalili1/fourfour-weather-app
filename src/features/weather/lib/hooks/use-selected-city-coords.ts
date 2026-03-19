@@ -1,15 +1,16 @@
-import { useCurrentUserLocation } from "@/core/hooks/use-current-user-location";
 import { useCityGeocodingStore } from "@/features/weather/lib/stores/city-geocoding-store";
 
-export const useSelectedCityCoords = () => {
-  const cityGeocodingStore = useCityGeocodingStore();
-  const currentUserLocation = useCurrentUserLocation({
-    enabled: !cityGeocodingStore.cityGeocoding,
-  });
+import { useCurrentUserLocation } from "@/core/hooks/use-current-user-location";
 
-  return {
-    data: cityGeocodingStore.cityGeocoding ?? currentUserLocation.data,
-    isFetching: currentUserLocation.isFetching,
-    isLoading: currentUserLocation.isLoading,
-  };
+export const useSelectedCityCoords = () => {
+	const cityGeocodingStore = useCityGeocodingStore();
+	const currentUserLocation = useCurrentUserLocation({
+		enabled: !cityGeocodingStore.cityGeocoding,
+	});
+
+	return {
+		data: cityGeocodingStore.cityGeocoding ?? currentUserLocation.data,
+		isFetching: currentUserLocation.isFetching,
+		isLoading: currentUserLocation.isLoading,
+	};
 };
