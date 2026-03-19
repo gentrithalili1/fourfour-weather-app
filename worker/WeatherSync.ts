@@ -1,7 +1,7 @@
 import type { CityWeather } from "@core/types/weather";
 import { DurableObject } from "cloudflare:workers";
 
-const MAX_RECENT = 3;
+const MAX_RECENT = 10;
 
 export class WeatherSync extends DurableObject<Env> {
 	private recent: CityWeather[] = [];

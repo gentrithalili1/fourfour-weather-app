@@ -17,6 +17,7 @@ import { useCityGeocodingStore } from "@/features/weather/lib/stores/city-geocod
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/core/components/ui/input-group";
 import { useDebounce } from "@/core/hooks/use-debounce";
 import type { CityGeocoding } from "@/core/types/weather";
+import { cn } from "@/core/utils/shadcn-utils";
 
 export function SearchCityCombobox() {
 	const [open, setOpen] = useState(false);
@@ -58,10 +59,14 @@ export function SearchCityCombobox() {
 			<PopoverTrigger
 				nativeButton={false}
 				render={<div className="relative flex w-full items-center cursor-text" />}>
-				<InputGroup className="h-13 text-2xl">
+				<InputGroup
+					className={cn(
+						"h-10 text-2xl border-white/30 rounded-xl bg-white/15 backdrop-blur-xl shadow-lg shadow-black/10 [&_[data-slot=input-group-addon]]:text-white/90"
+					)}>
 					<InputGroupInput
 						id="input-group-url"
 						placeholder="Search City..."
+						className="text-white placeholder:text-white/60"
 						value={search}
 						onChange={handleInputChange}
 					/>

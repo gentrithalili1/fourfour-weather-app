@@ -6,19 +6,12 @@ import {
 	DropdownMenuTrigger,
 } from "@core/components/ui/dropdown-menu";
 import { useTempUnitStore } from "@core/stores/temp-unit-store";
-import { Thermometer } from "lucide-react";
 
 import type { TempUnit } from "@/core/types/common";
 
 const TEMP_UNIT_OPTIONS: { unit: TempUnit; label: string }[] = [
-	{
-		unit: "celsius",
-		label: "°C Celsius",
-	},
-	{
-		unit: "fahrenheit",
-		label: "°F Fahrenheit",
-	},
+	{ unit: "celsius", label: "°C Celsius" },
+	{ unit: "fahrenheit", label: "°F Fahrenheit" },
 ];
 
 export function TempUnitToggle() {
@@ -29,7 +22,7 @@ export function TempUnitToggle() {
 			<DropdownMenuTrigger
 				render={
 					<Button variant="outline" size="icon">
-						<Thermometer className="h-[1.2rem] w-[1.2rem]" />
+						<span>{tempUnitStore.unit === "celsius" ? "°C" : "°F"}</span>
 						<span className="sr-only">Temperature unit</span>
 					</Button>
 				}

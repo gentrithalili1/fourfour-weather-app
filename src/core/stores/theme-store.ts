@@ -15,7 +15,7 @@ type ThemeStoreActions = {
 export const useThemeStore = create<ThemeStoreState & ThemeStoreActions>()(
 	persist(
 		(set) => ({
-			theme: "system",
+			theme: "dark",
 			setTheme: (theme) => set({ theme }),
 		}),
 		{ name: generateStorageKey("theme") }
