@@ -63,3 +63,19 @@ export interface Sys {
 	sunrise: number;
 	sunset: number;
 }
+
+export interface ForecastItem {
+	dt: number;
+	main: MainWeather;
+	weather: Weather[];
+	dt_txt: string;
+	pop?: number;
+	wind?: Wind;
+	clouds?: Clouds;
+}
+
+export interface ForecastResponse {
+	cod: string;
+	list: ForecastItem[];
+	city: { timezone: number };
+}

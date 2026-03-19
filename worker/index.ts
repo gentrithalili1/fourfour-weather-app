@@ -3,6 +3,7 @@ import { handleBackground } from "./handlers/background";
 import { handleLocation } from "./handlers/location";
 import { handleRecent } from "./handlers/recent";
 import { handleSearch } from "./handlers/search";
+import { handleForecast } from "./handlers/forecast";
 import { handleFetch } from "./handlers/weather";
 import { API_PATHS } from "./utils/constants";
 import { getApiKey } from "./utils/get-api-key";
@@ -26,6 +27,10 @@ export default {
 
 		if (match(request, API_PATHS.FETCH, "GET")) {
 			return handleFetch(request, getKey);
+		}
+
+		if (match(request, API_PATHS.FORECAST, "GET")) {
+			return handleForecast(request, getKey);
 		}
 
 		if (match(request, API_PATHS.LOCATION, "GET")) {

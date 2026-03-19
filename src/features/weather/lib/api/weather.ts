@@ -1,5 +1,5 @@
 import { apiRequest } from "@core/api/api-request";
-import type { CityGeocoding, CityWeather, Coord } from "@core/types/weather";
+import type { CityGeocoding, CityWeather, Coord, ForecastResponse } from "@core/types/weather";
 
 const getRecentCityWeatherSearch = async () => {
 	return apiRequest.get<CityWeather[]>(`/recent`);
@@ -11,6 +11,10 @@ const clearRecentSearch = async () => {
 
 const fetchCityWeather = async (params: Coord) => {
 	return apiRequest.get<CityWeather>(`/fetch`, { params });
+};
+
+const fetchForecast = async (params: Coord) => {
+	return apiRequest.get<ForecastResponse>(`/forecast`, { params });
 };
 
 const addToRecentSearch = async (cityWeather: CityWeather) => {
@@ -31,6 +35,7 @@ const fetchCityBackground = async (query: string) => {
 export const weatherApi = {
 	searchCityGeocoding,
 	fetchCityWeather,
+	fetchForecast,
 	fetchCityBackground,
 	addToRecentSearch,
 	getRecentCityWeatherSearch,
