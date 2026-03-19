@@ -1,5 +1,6 @@
 import { useClearRecentSearchMutation } from "@/features/weather/lib/hooks/use-clear-recent-search-mutation";
 import { useRecentSearchQuery } from "@/features/weather/lib/hooks/use-recent-search-query";
+import { useCityGeocodingStore } from "@/features/weather/lib/stores/city-geocoding-store";
 import {
   Card,
   CardHeader,
@@ -10,10 +11,20 @@ import {
 } from "@/core/components/ui/card";
 import { Button } from "@/core/components/ui/button";
 import { Spinner } from "@/core/components/ui/spinner";
+import type { CityWeather } from "@/core/types/weather";
+import { transformCityWeatherToCityGeocoding } from "@/features/weather/lib/utils/data-transform";
 
 export function RecentSearch() {
   const recentSearchQuery = useRecentSearchQuery();
   const clearRecentMutation = useClearRecentSearchMutation();
+  const cityGeocodingStore = useCityGeocodingStore();
+
+  const handleSelect = (city: CityWeather) => {
+    cityGeocodingStore.setCityGeocoding(
+      transformCityWeatherToCityGeocoding(city),
+    );
+  };
+
   return (
     <Card className="shrink-0">
       <CardHeader>
@@ -27,14 +38,14 @@ export function RecentSearch() {
           </p>
         ) : (
           <div className="flex flex-col gap-2">
-            {recentSearchQuery.data?.map((c) => (
+            {recentSearchQuery.data?.map((city) => (
               <Button
-                key={c.id}
+                key={city.id}
                 variant="outline"
                 className="h-auto justify-start py-3"
-                onClick={() => console.log(c)}
+                onClick={() => handleSelect(city)}
               >
-                {c.name}, {c.sys.country} — {c.main.temp}°C
+                {city.name}, {city.sys.country} — {city.main.temp}°C
               </Button>
             ))}
           </div>

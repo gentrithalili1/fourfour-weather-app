@@ -22,16 +22,16 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/core/components/ui/input-group";
+import { useCityGeocodingStore } from "@/features/weather/lib/stores/city-geocoding-store";
+import { useAddToRecentSearchMutation } from "@/features/weather/lib/hooks/use-add-to-recent-search-mutation";
 
-export function SearchCityCombobox({
-  onSelect,
-}: {
-  onSelect: (city: CityGeocoding) => void;
-}) {
+export function SearchCityCombobox() {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const debounced = useDebounce(search.trim(), 300);
   const searchCityGeocodingQuery = useSearchCityGeocodingQuery(debounced);
+  const cityGeocodingStore = useCityGeocodingStore();
+  const addToRecentSearchMutation = useAddToRecentSearchMutation();
 
   useEffect(() => {
     if (
@@ -59,7 +59,11 @@ export function SearchCityCombobox({
   const handleSelect = (city: CityGeocoding) => {
     setSearch("");
     setOpen(false);
-    onSelect(city);
+    cityGeocodingStore.setCityGeocoding(city);
+    addToRecentSearchMutation.mutate({
+      lat: city.lat,
+      lon: city.lon,
+    });
   };
 
   return (

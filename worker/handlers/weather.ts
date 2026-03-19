@@ -4,22 +4,15 @@ import type { CityWeather } from "@core/types/weather";
 export async function handleFetch(
   request: Request,
   getApiKey: () => string | null,
-  getDoStub: () => DurableObjectStub,
 ): Promise<Response> {
-  const body = (await request.json()) as { lat?: number; lon?: number };
-  const { lat, lon } = body;
+  const url = new URL(request.url);
+  const lat = Number(url.searchParams.get("lat"));
+  const lon = Number(url.searchParams.get("lon"));
   const apiKey = getApiKey();
-  if (lat == null || lon == null || !apiKey) {
+  if (Number.isNaN(lat) || Number.isNaN(lon) || !apiKey) {
     return Response.json({ error: "Invalid request" }, { status: 400 });
   }
   const cityWeather = await fetchCityWeather({ lat, lon, apiKey });
-  const stub = getDoStub();
-  await stub.fetch("https://do/api/weather/add", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cityWeather),
-  });
-
   return Response.json(cityWeather);
 }
 

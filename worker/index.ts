@@ -22,12 +22,13 @@ export default {
       return handleSearch(request, getKey);
     }
 
-    if (match(request, API_PATHS.FETCH, "POST")) {
-      return handleFetch(request, getKey, getStub);
+    if (match(request, API_PATHS.FETCH, "GET")) {
+      return handleFetch(request, getKey);
     }
 
     if (
       match(request, API_PATHS.RECENT, "GET") ||
+      match(request, API_PATHS.RECENT, "POST") ||
       match(request, API_PATHS.RECENT, "DELETE")
     ) {
       return handleRecent(request, getStub);
