@@ -1,0 +1,11 @@
+{
+	"useTabs": true,
+	"bracketSameLine": true,
+	"bracketSpacing": true,
+	"trailingComma": "es5",
+	"printWidth": 100,
+	"singleQuote": false,
+	"importOrderSeparation": true,
+	"importOrder": ["^(?!@/core/|@/features/).*", "^@/features/(.*)$", "^@/core/(.*)$", "^[./]"],
+	"plugins": ["@trivago/prettier-plugin-sort-imports"]
+}
