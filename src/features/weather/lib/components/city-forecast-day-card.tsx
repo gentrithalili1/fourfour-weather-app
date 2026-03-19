@@ -1,0 +1,42 @@
+import type { ForecastItem } from "@core/types/weather";
+
+import { getOwIconSrc } from "@/features/weather/lib/utils/get-ow-icon-src";
+
+import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
+import { formatForecastDay, isToday } from "@/core/utils/dates";
+
+interface CityForecastDayCardProps {
+	day: ForecastItem;
+	timezone: number;
+}
+
+export function CityForecastDayCard({ day, timezone }: CityForecastDayCardProps) {
+	const formatTemperature = useFormatTemperature();
+
+	return (
+		<div className="flex min-w-0 flex-col gap-1.5 rounded-lg bg-white/10 p-3 text-foreground">
+			<div className="flex items-center justify-between ">
+				<span className="text-xs font-semibold">
+					{isToday(day.dt, timezone) ? "Today" : formatForecastDay(day.dt, timezone)}
+				</span>
+				<div className="flex gap-1 text-sm">
+					<span className="font-semibold text-xs">{formatTemperature(day.main.temp_min)}</span>
+					<span className="font-semibold text-xs">{formatTemperature(day.main.temp_max)}</span>
+				</div>
+			</div>
+			<div className="flex flex-col items-center gap-0.5">
+				<img
+					src={getOwIconSrc(day.weather[0].icon)}
+					alt={day.weather[0].description}
+					className="size-11 drop-shadow sm:size-12"
+				/>
+				<p className="text-center text-xs capitalize ">{day.weather[0].description}</p>
+				<div className="flex flex-wrap justify-center gap-x-2 gap-y-0.5 text-xs">
+					<span>{day.main.humidity}%</span>
+					{day.wind != null && <span>{day.wind.speed} m/s</span>}
+					{(day.pop ?? 0) > 0.1 && <span>{Math.round((day.pop ?? 0) * 100)}%</span>}
+				</div>
+			</div>
+		</div>
+	);
+}

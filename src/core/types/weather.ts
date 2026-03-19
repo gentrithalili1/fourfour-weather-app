@@ -1,3 +1,15 @@
+export type City = {
+	id: number;
+	name: string;
+	country: string;
+	lat: number;
+	lon: number;
+	population: number;
+	timezone: number;
+	sunrise: number;
+	sunset: number;
+};
+
 export type CityGeocoding = {
 	name: string;
 	country: string;
@@ -72,10 +84,13 @@ export interface ForecastItem {
 	pop?: number;
 	wind?: Wind;
 	clouds?: Clouds;
+	visibility?: number;
 }
 
 export interface ForecastResponse {
 	cod: string;
+	cnt: number;
+	message: string;
 	list: ForecastItem[];
-	city: { timezone: number };
+	city: City;
 }

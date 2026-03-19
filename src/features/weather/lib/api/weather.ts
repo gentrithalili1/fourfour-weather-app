@@ -1,4 +1,5 @@
 import { apiRequest } from "@core/api/api-request";
+import type { CityBackground } from "@core/types/common";
 import type { CityGeocoding, CityWeather, Coord, ForecastResponse } from "@core/types/weather";
 
 const getRecentCityWeatherSearch = async () => {
@@ -26,10 +27,7 @@ const searchCityGeocoding = async (query: string) => {
 };
 
 const fetchCityBackground = async (query: string) => {
-	return apiRequest.get<{
-		imageUrl: string | null;
-		photographer: { name: string; url: string } | null;
-	}>(`/background`, { params: { q: query } });
+	return apiRequest.get<CityBackground>(`/background`, { params: { q: query } });
 };
 
 export const weatherApi = {

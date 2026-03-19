@@ -10,8 +10,8 @@ import { useTempUnitStore } from "@core/stores/temp-unit-store";
 import type { TempUnit } from "@/core/types/common";
 
 const TEMP_UNIT_OPTIONS: { unit: TempUnit; label: string }[] = [
-	{ unit: "celsius", label: "°C Celsius" },
-	{ unit: "fahrenheit", label: "°F Fahrenheit" },
+	{ unit: "celsius", label: "Celsius" },
+	{ unit: "fahrenheit", label: "Fahrenheit" },
 ];
 
 export function TempUnitToggle() {

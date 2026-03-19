@@ -10,3 +10,10 @@ export const formatForecastDay = (unix: number, timezoneOffsetSeconds: number) =
 		timeZone: "UTC",
 		weekday: "short",
 	});
+
+export const isToday = (dt: number, timezoneOffsetSeconds: number) => {
+	const now = Math.floor(Date.now() / 1000);
+	const todayDay = Math.floor((now + timezoneOffsetSeconds) / 86400);
+	const forecastDay = Math.floor((dt + timezoneOffsetSeconds) / 86400);
+	return todayDay === forecastDay;
+};

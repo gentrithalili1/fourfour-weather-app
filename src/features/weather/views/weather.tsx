@@ -1,5 +1,5 @@
+import { CityForecast } from "@/features/weather/lib/components/city-forecast";
 import { CityWeatherDetails } from "@/features/weather/lib/components/city-weather-details";
-import { DayForecast } from "@/features/weather/lib/components/day-forecast";
 import { RecentSearch } from "@/features/weather/lib/components/recent-search";
 import { useCityWeatherQuery } from "@/features/weather/lib/hooks/use-city-weather-query";
 import { useForecastQuery } from "@/features/weather/lib/hooks/use-forecast-query";
@@ -28,13 +28,13 @@ export function Weather() {
 
 			<div className="relative z-10 flex min-h-screen flex-col gap-6 p-6 lg:p-8">
 				<Header />
+
 				<CityWeatherDetails cityWeather={cityWeatherDetails} />
 
-				{forecastData?.daily && (
-					<div className="mx-auto w-full max-w-3xl">
-						<DayForecast daily={forecastData.daily} timezone={forecastData.city.timezone} />
-					</div>
-				)}
+				<div className="mx-auto w-full max-w-3xl">
+					<CityForecast forecast={forecastData} />
+				</div>
+
 				<RecentSearch />
 			</div>
 		</div>
