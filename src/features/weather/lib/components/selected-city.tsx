@@ -13,7 +13,9 @@ export function SelectedCity() {
     lon: selectedCityCoords.data?.lon,
   });
   const selected = cityWeatherQuery.data;
-  const backgroundQuery = useCityBackgroundQuery(selected?.name);
+  const backgroundQuery = useCityBackgroundQuery(
+    selected?.weather[0].description,
+  );
   const { imageUrl, photographer } = backgroundQuery.data ?? {};
   const isLoading =
     selectedCityCoords.isFetching ||
