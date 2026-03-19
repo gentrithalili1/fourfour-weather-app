@@ -23,7 +23,12 @@ export default defineConfig([
 			sourceType: "module",
 			globals: globals.browser,
 			parserOptions: {
-				project: ["./tsconfig.app.json", "./tsconfig.node.json", "./tsconfig.worker.json"],
+				project: [
+					"./tsconfig.app.json",
+					"./tsconfig.node.json",
+					"./tsconfig.worker.json",
+					"./tsconfig.e2e.json",
+				],
 			},
 		},
 		rules: {
