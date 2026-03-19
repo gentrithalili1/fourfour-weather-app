@@ -8,9 +8,25 @@ import {
   DropdownMenuTrigger,
 } from "@core/components/ui/dropdown-menu";
 import { useTheme } from "@core/components/providers/theme-provider";
+import type { Theme } from "@/core/types/common";
+
+const THEME_OPTIONS: { theme: Theme; label: string }[] = [
+  {
+    theme: "light",
+    label: "Light",
+  },
+  {
+    theme: "dark",
+    label: "Dark",
+  },
+  {
+    theme: "system",
+    label: "System",
+  },
+];
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const themeStore = useTheme();
 
   return (
     <DropdownMenu>
@@ -24,15 +40,17 @@ export function ModeToggle() {
         }
       />
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+        {THEME_OPTIONS.map((option) => (
+          <DropdownMenuItem
+            key={option.theme}
+            onClick={() => themeStore.setTheme(option.theme)}
+            className={
+              themeStore.theme === option.theme ? "bg-accent" : undefined
+            }
+          >
+            {option.label}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

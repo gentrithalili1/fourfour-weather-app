@@ -1,5 +1,6 @@
 import { ModeToggle } from "@/core/components/shared/mode-toggle";
 import { SettingsSheet } from "@/core/components/shared/settings-sheet";
+import { TempUnitToggle } from "@/core/components/shared/temp-unit-toggle";
 
 export function Header() {
   return (
@@ -9,6 +10,7 @@ export function Header() {
       </span>
 
       <div className="flex items-center gap-2">
+        <TempUnitToggle />
         <ModeToggle />
         <SettingsSheet />
       </div>

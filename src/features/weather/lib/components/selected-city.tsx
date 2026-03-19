@@ -5,9 +5,10 @@ import { useCityWeatherQuery } from "@/features/weather/lib/hooks/use-city-weath
 import { useSelectedCityCoords } from "@/features/weather/lib/hooks/use-selected-city-coords";
 import { getOwIconSrc } from "@/features/weather/lib/utils/get-ow-icon-src";
 import { getWeatherGradient } from "@/features/weather/lib/utils/get-weather-gradient";
-
+import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 export function SelectedCity() {
   const selectedCityCoords = useSelectedCityCoords();
+  const formatTemperature = useFormatTemperature();
   const cityWeatherQuery = useCityWeatherQuery({
     lat: selectedCityCoords.data?.lat,
     lon: selectedCityCoords.data?.lon,
@@ -72,7 +73,7 @@ export function SelectedCity() {
                 />
               </div>
               <h1 className="text-4xl font-bold tracking-tight drop-shadow-md sm:text-5xl lg:text-7xl">
-                {Math.round(selected.main.temp)}°
+                {formatTemperature(selected.main.temp)}
               </h1>
               <p className="text-2xl font-medium opacity-95 drop-shadow lg:text-3xl">
                 {selected.name}, {selected.sys.country}
@@ -81,7 +82,9 @@ export function SelectedCity() {
                 {selected.weather[0].description}
               </p>
               <div className="flex gap-6 text-sm text-white/80">
-                <span>Feels like {Math.round(selected.main.feels_like)}°</span>
+                <span>
+                  Feels like {formatTemperature(selected.main.feels_like)}
+                </span>
                 <span>{selected.main.humidity}% humidity</span>
                 <span>{selected.wind.speed} m/s wind</span>
               </div>

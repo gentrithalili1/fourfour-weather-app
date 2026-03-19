@@ -13,11 +13,13 @@ import { Button } from "@/core/components/ui/button";
 import { Spinner } from "@/core/components/ui/spinner";
 import type { CityWeather } from "@/core/types/weather";
 import { transformCityWeatherToCityGeocoding } from "@/features/weather/lib/utils/data-transform";
+import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 
 export function RecentSearch() {
   const recentSearchQuery = useRecentSearchQuery();
   const clearRecentMutation = useClearRecentSearchMutation();
   const cityGeocodingStore = useCityGeocodingStore();
+  const formatTemperature = useFormatTemperature();
 
   const handleSelect = (city: CityWeather) => {
     cityGeocodingStore.setCityGeocoding(
@@ -45,7 +47,8 @@ export function RecentSearch() {
                 className="h-auto justify-start py-3"
                 onClick={() => handleSelect(city)}
               >
-                {city.name}, {city.sys.country} — {city.main.temp}°C
+                {city.name}, {city.sys.country} —{" "}
+                {formatTemperature(city.main.temp)}
               </Button>
             ))}
           </div>
