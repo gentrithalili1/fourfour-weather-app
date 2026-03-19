@@ -2,25 +2,19 @@ import { Card, CardContent } from "@/core/components/ui/card";
 import { Skeleton } from "@/core/components/ui/skeleton";
 import { useCityWeatherQuery } from "@/features/weather/lib/hooks/use-city-weather-query";
 
-import { useCityGeocodingStore } from "@/features/weather/lib/stores/city-geocoding-store";
 import { Cloud } from "lucide-react";
-import { useCurrentUserLocation } from "@/core/hooks/use-current-user-location";
+import { useSelectedCityCoords } from "@/features/weather/lib/hooks/use-selected-city-coords";
 
 export function SelectedCity() {
-  const cityGeocodingStore = useCityGeocodingStore();
-  const currentUserLocation = useCurrentUserLocation(
-    !cityGeocodingStore.cityGeocoding,
-  );
-  const coords = cityGeocodingStore.cityGeocoding ?? currentUserLocation.data;
+  const selectedCityCoords = useSelectedCityCoords();
   const cityWeatherQuery = useCityWeatherQuery({
-    lat: coords?.lat,
-    lon: coords?.lon,
+    lat: selectedCityCoords.data?.lat,
+    lon: selectedCityCoords.data?.lon,
   });
-
   const selected = cityWeatherQuery.data;
   const isLoading =
-    currentUserLocation.isLoading ||
-    (coords != null && cityWeatherQuery.isFetching);
+    selectedCityCoords.isFetching ||
+    (selectedCityCoords.data != null && cityWeatherQuery.isLoading);
 
   return (
     <>
