@@ -4,10 +4,15 @@ export const OPENWEATHER = {
   FORECAST: "https://api.openweathermap.org/data/2.5/forecast",
 } as const;
 
+export const UNSPLASH = {
+  BASE: "https://api.unsplash.com",
+} as const;
+
 export const API_PATHS = {
   SEARCH: "/api/weather/search",
   FETCH: "/api/weather/fetch",
   RECENT: "/api/weather/recent",
   FORECAST: "/api/weather/forecast",
   LOCATION: "/api/weather/location",
+  BACKGROUND: "/api/weather/background",
 } as const;

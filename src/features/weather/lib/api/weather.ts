@@ -21,10 +21,18 @@ const searchCityGeocoding = async (query: string) => {
   return apiRequest.get<CityGeocoding[]>(`/search`, { params: { q: query } });
 };
 
+const fetchCityBackground = async (query: string) => {
+  return apiRequest.get<{
+    imageUrl: string | null;
+    photographer: { name: string; url: string } | null;
+  }>(`/background`, { params: { q: query } });
+};
+
 export const weatherApi = {
-  searchCityGeocoding: searchCityGeocoding,
-  fetchCityWeather: fetchCityWeather,
-  addToRecentSearch: addToRecentSearch,
-  getRecentSearch: getRecentCityWeatherSearch,
-  clearRecentSearch: clearRecentSearch,
+  searchCityGeocoding,
+  fetchCityWeather,
+  fetchCityBackground,
+  addToRecentSearch,
+  getRecentCityWeatherSearch,
+  clearRecentSearch,
 };

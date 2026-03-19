@@ -1,4 +1,5 @@
 import { API_PATHS } from "./utils/constants";
+import { handleBackground } from "./handlers/background";
 import { handleSearch } from "./handlers/search";
 import { handleFetch } from "./handlers/weather";
 import { handleRecent } from "./handlers/recent";
@@ -29,6 +30,13 @@ export default {
 
     if (match(request, API_PATHS.LOCATION, "GET")) {
       return handleLocation(request);
+    }
+
+    if (match(request, API_PATHS.BACKGROUND, "GET")) {
+      return handleBackground(request, () =>
+        (env as { UNSPLASH_ACCESS_KEY?: string }).UNSPLASH_ACCESS_KEY?.trim() ||
+        null,
+      );
     }
 
     if (

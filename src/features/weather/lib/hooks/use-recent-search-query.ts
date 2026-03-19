@@ -9,6 +9,6 @@ export const recentSearchQueryKeys = {
 export const useRecentSearchQuery = () => {
   return useQuery<CityWeather[], Error>({
     queryKey: recentSearchQueryKeys.all,
-    queryFn: () => weatherApi.getRecentSearch(),
+    queryFn: () => weatherApi.getRecentCityWeatherSearch(),
   });
 };
