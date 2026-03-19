@@ -9,4 +9,5 @@ export const API_PATHS = {
   FETCH: "/api/weather/fetch",
   RECENT: "/api/weather/recent",
   FORECAST: "/api/weather/forecast",
+  LOCATION: "/api/weather/location",
 } as const;

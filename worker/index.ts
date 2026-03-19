@@ -2,6 +2,7 @@ import { API_PATHS } from "./utils/constants";
 import { handleSearch } from "./handlers/search";
 import { handleFetch } from "./handlers/weather";
 import { handleRecent } from "./handlers/recent";
+import { handleLocation } from "./handlers/location";
 import { getApiKey } from "./utils/get-api-key";
 import { getDoStub } from "./utils/get-do-stub";
 import { WeatherSync } from "./WeatherSync";
@@ -24,6 +25,10 @@ export default {
 
     if (match(request, API_PATHS.FETCH, "GET")) {
       return handleFetch(request, getKey);
+    }
+
+    if (match(request, API_PATHS.LOCATION, "GET")) {
+      return handleLocation(request);
     }
 
     if (

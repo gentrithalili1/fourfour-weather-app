@@ -1,19 +1,30 @@
 import { Card, CardContent } from "@/core/components/ui/card";
 import { Skeleton } from "@/core/components/ui/skeleton";
 import { useCityWeatherQuery } from "@/features/weather/lib/hooks/use-city-weather-query";
+
 import { useCityGeocodingStore } from "@/features/weather/lib/stores/city-geocoding-store";
 import { Cloud } from "lucide-react";
+import { useCurrentUserLocation } from "@/core/hooks/use-current-user-location";
 
 export function SelectedCity() {
   const cityGeocodingStore = useCityGeocodingStore();
+  const currentUserLocation = useCurrentUserLocation(
+    !cityGeocodingStore.cityGeocoding,
+  );
+  const coords = cityGeocodingStore.cityGeocoding ?? currentUserLocation.data;
   const cityWeatherQuery = useCityWeatherQuery({
-    lat: cityGeocodingStore.cityGeocoding?.lat,
-    lon: cityGeocodingStore.cityGeocoding?.lon,
+    lat: coords?.lat,
+    lon: coords?.lon,
   });
+
   const selected = cityWeatherQuery.data;
+  const isLoading =
+    currentUserLocation.isLoading ||
+    (coords != null && cityWeatherQuery.isFetching);
+
   return (
     <>
-      {cityWeatherQuery.isLoading ? (
+      {isLoading ? (
         <div className="flex min-h-0 flex-1 overflow-hidden rounded-xl bg-gradient-to-br from-sky-500 via-blue-600 to-indigo-700 text-white shadow-2xl ring-1 ring-white/10 dark:from-sky-600 dark:via-blue-700 dark:to-indigo-800 flex-col items-center justify-center">
           <Skeleton className="w-full h-full" />
         </div>
