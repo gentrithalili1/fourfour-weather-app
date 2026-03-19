@@ -1,3 +1,5 @@
+import { Sunrise, Sunset } from "lucide-react";
+
 import { useCityBackgroundQuery } from "@/features/weather/lib/hooks/use-city-background-query";
 import { useCityWeatherQuery } from "@/features/weather/lib/hooks/use-city-weather-query";
 import { useSelectedCityCoords } from "@/features/weather/lib/hooks/use-selected-city-coords";
@@ -7,6 +9,7 @@ import { getWeatherGradient } from "@/features/weather/lib/utils/get-weather-gra
 import { Card, CardContent } from "@/core/components/ui/card";
 import { Skeleton } from "@/core/components/ui/skeleton";
 import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
+import { formatSunTime } from "@/core/utils/dates";
 
 export function SelectedCity() {
 	const selectedCityCoords = useSelectedCityCoords();
@@ -79,10 +82,20 @@ export function SelectedCity() {
 							<p className="text-lg capitalize text-white/90 drop-shadow">
 								{selected.weather[0].description}
 							</p>
-							<div className="flex gap-6 text-sm text-white/80">
+							<div className="flex flex-wrap justify-center gap-6 text-sm text-white/80">
 								<span>Feels like {formatTemperature(selected.main.feels_like)}</span>
 								<span>{selected.main.humidity}% humidity</span>
 								<span>{selected.wind.speed} m/s wind</span>
+							</div>
+							<div className="flex items-center justify-center gap-6 text-sm text-white/80">
+								<span className="flex items-center gap-1.5">
+									<Sunrise className="size-4" aria-hidden />
+									{formatSunTime(selected.sys.sunrise, selected.timezone)}
+								</span>
+								<span className="flex items-center gap-1.5">
+									<Sunset className="size-4" aria-hidden />
+									{formatSunTime(selected.sys.sunset, selected.timezone)}
+								</span>
 							</div>
 						</div>
 					</div>
