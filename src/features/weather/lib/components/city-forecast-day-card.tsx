@@ -14,7 +14,7 @@ export function CityForecastDayCard({ day, timezone }: CityForecastDayCardProps)
 	const formatTemperature = useFormatTemperature();
 
 	return (
-		<div className="flex min-w-0 flex-col gap-1.5 rounded-lg bg-white/10 p-3 text-foreground">
+		<div role="listitem" className="flex min-w-0 flex-col gap-1.5 rounded-lg bg-white/10 p-3 text-foreground">
 			<div className="flex items-center justify-between ">
 				<span className="text-xs font-semibold">
 					{isToday(day.dt, timezone) ? "Today" : formatForecastDay(day.dt, timezone)}

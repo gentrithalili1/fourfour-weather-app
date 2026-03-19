@@ -7,6 +7,7 @@ import { useSelectedCityCoords } from "@/features/weather/lib/hooks/use-selected
 
 import { Header } from "@/core/components/shared/header";
 import { WeatherBackground } from "@/core/components/shared/weather-background";
+import { useSetDocumentName } from "@/core/hooks/use-set-document-name";
 
 export function Weather() {
 	const selectedCityCoords = useSelectedCityCoords();
@@ -21,6 +22,8 @@ export function Weather() {
 
 	const cityWeatherDetails = cityWeatherQuery.data;
 	const forecastData = forecastQuery.data;
+
+	useSetDocumentName(cityWeatherDetails?.name);
 
 	return (
 		<div className="relative min-h-screen w-full overflow-auto">

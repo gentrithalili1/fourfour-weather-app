@@ -15,7 +15,9 @@ export function CityWeatherDetails(props: CityWeatherDetailsProps) {
 	const cityWeather = props.cityWeather;
 
 	return (
-		<div className="flex flex-1 flex-col items-center justify-center">
+		<div
+			aria-label={`Weather in ${cityWeather?.name}, ${cityWeather?.sys.country}`}
+			className="flex flex-1 flex-col items-center justify-center py-5">
 			{cityWeather ? (
 				<div
 					key={cityWeather.id}

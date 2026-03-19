@@ -8,7 +8,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@core/components/ui/popover";
 import { Loader2, Search } from "lucide-react";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useAddToRecentSearchMutation } from "@/features/weather/lib/hooks/use-add-to-recent-search-mutation";
 import { useSearchCityGeocodingQuery } from "@/features/weather/lib/hooks/use-search-city-geocoding-query";
@@ -20,6 +20,8 @@ import type { CityGeocoding } from "@/core/types/weather";
 import { cn } from "@/core/utils/shadcn-utils";
 
 export function SearchCityCombobox() {
+	const inputRef = useRef<HTMLInputElement>(null);
+	const listRef = useRef<HTMLDivElement>(null);
 	const [open, setOpen] = useState(false);
 	const [search, setSearch] = useState("");
 	const debounced = useDebounce(search.trim(), 300);
@@ -44,6 +46,41 @@ export function SearchCityCombobox() {
 		setSearch(e.target.value);
 	};
 
+	const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		const hasResults =
+			open &&
+			!searchCityGeocodingQuery.isLoading &&
+			!searchCityGeocodingQuery.isError &&
+			(searchCityGeocodingQuery.data?.length ?? 0) > 0;
+
+		if (e.key === "ArrowDown" && hasResults) {
+			e.preventDefault();
+			const commandRoot = listRef.current?.querySelector<HTMLElement>("[cmdk-root]");
+			if (commandRoot) {
+				commandRoot.focus();
+				commandRoot.dispatchEvent(
+					new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true })
+				);
+			}
+		}
+	};
+
+	const handleListKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key === "ArrowUp") {
+			const firstItem = listRef.current?.querySelector<HTMLElement>("[cmdk-item]");
+			const selectedItem = listRef.current?.querySelector<HTMLElement>(
+				"[cmdk-item][aria-selected='true']"
+			);
+			const isFirstItemSelected = firstItem != null && selectedItem === firstItem;
+			const focusInList = listRef.current?.contains(document.activeElement);
+			if (isFirstItemSelected && focusInList) {
+				e.preventDefault();
+				e.stopPropagation();
+				inputRef.current?.focus();
+			}
+		}
+	};
+
 	const handleSelect = (city: CityGeocoding) => {
 		setSearch("");
 		setOpen(false);
@@ -64,27 +101,39 @@ export function SearchCityCombobox() {
 						"h-10 text-2xl border-white/30 rounded-xl bg-white/15 backdrop-blur-xl shadow-lg shadow-black/10 [&_[data-slot=input-group-addon]]:text-white/90"
 					)}>
 					<InputGroupInput
+						ref={inputRef}
 						id="input-group-url"
+						autoComplete="off"
+						aria-label="Search for a city"
+						aria-expanded={open}
+						aria-controls="city-search-results"
 						placeholder="Search City..."
 						className="text-white placeholder:text-white/60"
 						value={search}
 						onChange={handleInputChange}
+						onKeyDown={handleInputKeyDown}
 					/>
 					<InputGroupAddon align="inline-start">
-						<Search />
+						<Search aria-hidden />
 					</InputGroupAddon>
 
 					<InputGroupAddon align="inline-end">
 						{searchCityGeocodingQuery.isLoading && search.length > 0 && (
-							<Loader2 className="animate-spin" />
+							<Loader2 className="animate-spin" aria-label="Loading" />
 						)}
 					</InputGroupAddon>
 				</InputGroup>
 			</PopoverTrigger>
 
-			<PopoverContent className="w-(--anchor-width) p-0" align="start" initialFocus={false}>
-				<Command shouldFilter={false}>
-					<CommandList>
+			<PopoverContent
+				id="city-search-results"
+				className="w-(--anchor-width) p-0"
+				align="start"
+				initialFocus={false}
+				finalFocus={inputRef}>
+				<div ref={listRef} className="outline-none" onKeyDownCapture={handleListKeyDown}>
+					<Command shouldFilter={false} tabIndex={-1}>
+						<CommandList>
 						{searchCityGeocodingQuery.isError && (
 							<div className="p-3 text-sm text-red-500">
 								{searchCityGeocodingQuery.error.message}
@@ -106,8 +155,9 @@ export function SearchCityCombobox() {
 								</CommandItem>
 							))}
 						</CommandGroup>
-					</CommandList>
-				</Command>
+						</CommandList>
+					</Command>
+				</div>
 			</PopoverContent>
 		</Popover>
 	);

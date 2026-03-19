@@ -11,9 +11,9 @@ import { useBackgroundStore } from "@/core/stores/background-store";
 import type { BackgroundType } from "@/core/types/common";
 
 const OPTIONS: { type: BackgroundType; label: string; icon: React.ReactNode }[] = [
-	{ type: "image", label: "Weather photo", icon: <Image className="size-4" /> },
-	{ type: "gradient", label: "Weather color", icon: <Palette className="size-4" /> },
-	{ type: "none", label: "None", icon: <ImageOff className="size-4" /> },
+	{ type: "image", label: "Weather photo", icon: <Image className="size-4" aria-hidden /> },
+	{ type: "gradient", label: "Weather color", icon: <Palette className="size-4" aria-hidden /> },
+	{ type: "none", label: "None", icon: <ImageOff className="size-4" aria-hidden /> },
 ] as const;
 
 export function BackgroundToggle() {

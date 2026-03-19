@@ -23,7 +23,9 @@ export function TempUnitToggle() {
 				render={
 					<Button variant="outline" size="icon">
 						<span>{tempUnitStore.unit === "celsius" ? "°C" : "°F"}</span>
-						<span className="sr-only">Temperature unit</span>
+						<span className="sr-only">
+							Switch temperature unit (currently {tempUnitStore.unit === "celsius" ? "°C" : "°F"})
+						</span>
 					</Button>
 				}
 			/>

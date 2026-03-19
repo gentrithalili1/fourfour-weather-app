@@ -10,6 +10,7 @@ import { Button } from "@/core/components/ui/button";
 import { Spinner } from "@/core/components/ui/spinner";
 import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 import type { CityWeather } from "@/core/types/weather";
+import { scrollToTop } from "@/core/utils/scroll";
 
 export function RecentSearch() {
 	const recentSearchQuery = useRecentSearchQuery();
@@ -18,6 +19,7 @@ export function RecentSearch() {
 	const formatTemperature = useFormatTemperature();
 
 	const handleSelect = (city: CityWeather) => {
+		scrollToTop();
 		cityGeocodingStore.setCityGeocoding(transformCityWeatherToCityGeocoding(city));
 	};
 
@@ -27,11 +29,12 @@ export function RecentSearch() {
 	return (
 		<div className="flex flex-col gap-5 mb-4">
 			<div className="flex items-center justify-between border-b border-border/50 pb-2">
-				<span className="text-md font-semibold ">Recent</span>
+				<h2 className="text-md font-semibold">Recent</h2>
 
 				{!isEmpty && (
 					<Button
 						variant="outline"
+						aria-label="Clear recent searches"
 						onClick={() => clearRecentMutation.mutate()}
 						disabled={clearRecentMutation.isPending}>
 						{clearRecentMutation.isPending ? (
@@ -49,7 +52,11 @@ export function RecentSearch() {
 			) : (
 				<div className="flex flex-row overflow-x-auto gap-2 pb-3">
 					{cities.map((city) => (
-						<Button key={city.id} variant="outline" onClick={() => handleSelect(city)}>
+						<Button
+							key={city.id}
+							variant="outline"
+							aria-label={`Select ${city.name}, ${city.sys.country} - ${formatTemperature(city.main.temp)}`}
+							onClick={() => handleSelect(city)}>
 							<img
 								src={getOwIconSrc(city.weather[0].icon)}
 								alt={city.weather[0].description}
