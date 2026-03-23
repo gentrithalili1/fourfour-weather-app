@@ -8,10 +8,10 @@ const forecastQueryKeys = {
 	coords: (coords: Coord) => [...forecastQueryKeys.all, coords.lat, coords.lon] as const,
 };
 
-interface UseForecastQueryParams {
+type UseForecastQueryParams = {
 	lat?: number;
 	lon?: number;
-}
+};
 
 export const useForecastQuery = (params: UseForecastQueryParams) => {
 	return useQuery<ForecastResponse, Error>({

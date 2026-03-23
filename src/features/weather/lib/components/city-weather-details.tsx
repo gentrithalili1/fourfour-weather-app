@@ -5,9 +5,9 @@ import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 import type { CityWeather } from "@/core/types/weather";
 import { formatSunTime } from "@/core/utils/dates";
 
-interface CityWeatherDetailsProps {
+type CityWeatherDetailsProps = {
 	cityWeather?: CityWeather;
-}
+};
 
 export function CityWeatherDetails(props: CityWeatherDetailsProps) {
 	const formatTemperature = useFormatTemperature();

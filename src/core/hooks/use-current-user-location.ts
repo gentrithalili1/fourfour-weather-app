@@ -45,9 +45,9 @@ export const currentUserLocationQueryKeys = {
 	all: ["current-user-location"] as const,
 };
 
-interface UseCurrentUserLocationParams {
+type UseCurrentUserLocationParams = {
 	enabled: boolean;
-}
+};
 
 export const useCurrentUserLocation = (params: UseCurrentUserLocationParams) => {
 	return useQuery<Coord, Error>({

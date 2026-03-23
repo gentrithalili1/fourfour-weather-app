@@ -8,10 +8,10 @@ export const cityWeatherQueryKeys = {
 	coords: (coords: Coord) => [...cityWeatherQueryKeys.all, coords.lat, coords.lon] as const,
 };
 
-interface UseCityWeatherQueryParams {
+type UseCityWeatherQueryParams = {
 	lat?: number;
 	lon?: number;
-}
+};
 
 export const useCityWeatherQuery = (params: UseCityWeatherQueryParams) => {
 	return useQuery<CityWeather, Error>({

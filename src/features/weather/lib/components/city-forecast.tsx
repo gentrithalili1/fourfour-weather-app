@@ -5,9 +5,9 @@ import { Calendar } from "lucide-react";
 import { CityForecastDayCard } from "@/features/weather/lib/components/city-forecast-day-card";
 import { transformForecastToDailyForecast } from "@/features/weather/lib/utils/data-transform";
 
-interface CityForecastProps {
+type CityForecastProps = {
 	forecast?: ForecastResponse;
-}
+};
 
 export function CityForecast({ forecast }: CityForecastProps) {
 	const dailyForecast = forecast ? transformForecastToDailyForecast(forecast.list) : [];

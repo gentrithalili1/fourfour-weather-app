@@ -4,10 +4,10 @@ import { WeatherIcon } from "@/core/components/shared/weather-icon";
 import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 import { formatForecastDay, isToday } from "@/core/utils/dates";
 
-interface CityForecastDayCardProps {
+type CityForecastDayCardProps = {
 	day: ForecastItem;
 	timezone: number;
-}
+};
 
 export function CityForecastDayCard({ day, timezone }: CityForecastDayCardProps) {
 	const formatTemperature = useFormatTemperature();

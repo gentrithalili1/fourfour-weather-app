@@ -2,10 +2,10 @@
 
 import { toast, type ToasterProps } from "sonner";
 
-interface HandleErrorParams {
+type HandleErrorParams = {
 	error: unknown;
 	toastOptions?: ToasterProps;
-}
+};
 export const useErrorHandler = () => {
 	const handleError = ({ error, toastOptions }: HandleErrorParams) => {
 		toast.error("Error!", {
