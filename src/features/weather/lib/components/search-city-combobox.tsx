@@ -19,6 +19,7 @@ import { Button } from "@/core/components/ui/button";
 import { Field, FieldDescription, FieldLabel } from "@/core/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/core/components/ui/input-group";
 import { useDebounce } from "@/core/hooks/use-debounce";
+import { useBackgroundStore } from "@/core/stores/background-store";
 import type { CityGeocoding } from "@/core/types/weather";
 import { cn } from "@/core/utils/shadcn-utils";
 
@@ -31,6 +32,8 @@ export function SearchCityCombobox() {
 	const searchCityGeocodingQuery = useSearchCityGeocodingQuery(debounced);
 	const cityGeocodingStore = useCityGeocodingStore();
 	const addToRecentSearchMutation = useAddToRecentSearchMutation();
+	const backgroundType = useBackgroundStore((state) => state.type);
+	const isDynamicBackground = backgroundType === "image" || backgroundType === "gradient";
 
 	const hasSearch = search.trim().length > 0;
 	const isLoading = hasSearch && searchCityGeocodingQuery.isLoading;
@@ -119,7 +122,7 @@ export function SearchCityCombobox() {
 					render={<div className="relative flex w-full items-center cursor-text" />}>
 					<InputGroup
 						className={cn(
-							"h-10 text-2xl border-white/30 rounded-xl bg-white/15 backdrop-blur-xl shadow-lg shadow-black/10 **:data-[slot=input-group-addon]:text-white/90"
+							"h-10 text-2xl border-white/30 rounded-xl bg-white/15 backdrop-blur-xl shadow-lg shadow-black/10"
 						)}>
 						<InputGroupInput
 							ref={inputRef}
@@ -136,13 +139,20 @@ export function SearchCityCombobox() {
 								searchCityGeocodingQuery.isError ? "city-search-error-description" : undefined
 							}
 							placeholder="Search City..."
-							className="text-white placeholder:text-white/60"
+							className={
+								isDynamicBackground
+									? "text-white placeholder:text-white"
+									: "text-foreground placeholder:text-muted-foreground"
+							}
 							value={search}
 							onChange={handleInputChange}
 							onKeyDown={handleInputKeyDown}
 						/>
 						<InputGroupAddon align="inline-start">
-							<Search aria-hidden />
+							<Search
+								aria-hidden
+								className={isDynamicBackground ? "text-white" : "text-foreground"}
+							/>
 						</InputGroupAddon>
 
 						<InputGroupAddon align="inline-end">
