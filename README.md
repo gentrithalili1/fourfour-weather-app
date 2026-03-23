@@ -3,6 +3,18 @@
 A weather web app built with React and TypeScript, powered by Cloudflare Workers.
 (Test assignment app for Senior TS Developer at Manta)
 
+## Features
+
+- Search cities to check the weather.
+- See weather details for the selected city.
+- See a 5-day weather forecast for the selected city.
+- See persisted recent searches
+- Clear recent searches.
+- Remove a single recent search item.
+- Switch temperature units.
+- Show background based on weather and time conditions.
+- Show a simple gradient based on the weather.
+
 ## Technologies used
 
 - React 19
