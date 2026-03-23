@@ -1,3 +1,5 @@
+export const STORAGE_KEY_PREFIX = "fourfour-weather-app";
+
 export function generateStorageKey(key: string) {
-	return `fourfour-weather-app:${key}`;
+	return `${STORAGE_KEY_PREFIX}:${key}`;
 }
