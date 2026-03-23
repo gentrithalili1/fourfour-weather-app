@@ -2,14 +2,16 @@
 
 import { toast, type ToasterProps } from "sonner";
 
+import { getErrorMessage } from "@/core/utils/get-error-message";
+
 type HandleErrorParams = {
-	error: unknown;
+	error?: unknown;
 	toastOptions?: ToasterProps;
 };
 export const useErrorHandler = () => {
 	const handleError = ({ error, toastOptions }: HandleErrorParams) => {
 		toast.error("Error!", {
-			description: getErrorMessage(error),
+			description: getErrorMessage(error as unknown as Error | null | undefined),
 			...toastOptions,
 		});
 	};
@@ -17,18 +19,4 @@ export const useErrorHandler = () => {
 	return {
 		handleError,
 	};
-};
-
-// here we can add more error types to handle based on the error response from the server
-// we'll keep it simple for this assignment
-const getErrorMessage = (error: unknown) => {
-	if (error instanceof Error) {
-		return error.message;
-	}
-
-	if (typeof error === "string") {
-		return error;
-	}
-
-	return String(error);
 };

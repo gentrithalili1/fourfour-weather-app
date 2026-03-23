@@ -5,15 +5,18 @@ import { Calendar } from "lucide-react";
 import { CityForecastDayCard } from "@/features/weather/lib/components/city-forecast-day-card";
 import { transformForecastToDailyForecast } from "@/features/weather/lib/utils/data-transform";
 
+import { ErrorMessage } from "@/core/components/shared/error-message";
+import { LoadingData } from "@/core/components/shared/loading-data";
+
 type CityForecastProps = {
+	isLoading?: boolean;
+	error?: Error | null;
 	forecast?: ForecastResponse;
 };
 
-export function CityForecast({ forecast }: CityForecastProps) {
+export function CityForecast({ isLoading, error, forecast }: CityForecastProps) {
 	const dailyForecast = forecast ? transformForecastToDailyForecast(forecast.list) : [];
 	const timezone = forecast?.city.timezone ?? 0;
-
-	if (!dailyForecast.length) return null;
 
 	return (
 		<div
@@ -26,13 +29,19 @@ export function CityForecast({ forecast }: CityForecastProps) {
 				5-DAY FORECAST
 			</div>
 
-			<div
-				role="list"
-				className="grid min-w-0 grid-cols-2 gap-3 overflow-x-auto pb-2 pt-2 sm:grid-cols-3 lg:grid-cols-5">
-				{dailyForecast.map((day) => (
-					<CityForecastDayCard key={day.dt_txt.slice(0, 10)} day={day} timezone={timezone} />
-				))}
-			</div>
+			{isLoading ? (
+				<LoadingData message="Loading 5-day forecast..." />
+			) : error ? (
+				<ErrorMessage error={error} />
+			) : (
+				<div
+					role="list"
+					className="grid min-w-0 grid-cols-2 gap-3 overflow-x-auto pb-2 pt-2 sm:grid-cols-3 lg:grid-cols-5">
+					{dailyForecast.map((day) => (
+						<CityForecastDayCard key={day.dt_txt.slice(0, 10)} day={day} timezone={timezone} />
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

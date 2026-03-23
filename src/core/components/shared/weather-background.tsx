@@ -1,12 +1,14 @@
+import { cn } from "@core/utils/shadcn-utils";
+
 import { useCityBackgroundQuery } from "@/features/weather/lib/hooks/use-city-background-query";
 import { getWeatherGradient } from "@/features/weather/lib/utils/get-weather-gradient";
 
 import { useBackgroundStore } from "@/core/stores/background-store";
 import type { CityWeather } from "@/core/types/weather";
 
-interface WeatherBackgroundProps {
+type WeatherBackgroundProps = {
 	cityWeather?: CityWeather;
-}
+};
 
 export function WeatherBackground(props: WeatherBackgroundProps) {
 	const backgroundStore = useBackgroundStore();
@@ -26,7 +28,7 @@ export function WeatherBackground(props: WeatherBackgroundProps) {
 	}
 
 	return (
-		<div className={`fixed inset-0 -z-10 bg-linear-to-br ${gradient}`} aria-hidden>
+		<div className={cn("fixed inset-0 -z-10 bg-linear-to-br", gradient)} aria-hidden>
 			{imageUrl && isPhoto && (
 				<>
 					<img

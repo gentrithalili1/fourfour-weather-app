@@ -16,13 +16,13 @@ export function CityForecastDayCard({ day, timezone }: CityForecastDayCardProps)
 		<div
 			role="listitem"
 			className="flex min-w-0 flex-col gap-1.5 rounded-lg bg-white/10 p-3 text-foreground">
-			<div className="flex items-center justify-between ">
+			<div className="flex items-start justify-between ">
 				<span className="text-xs font-semibold">
 					{isToday(day.dt, timezone) ? "Today" : formatForecastDay(day.dt, timezone)}
 				</span>
-				<div className="flex gap-1 text-sm">
-					<span className="font-semibold text-xs">{formatTemperature(day.main.temp_min)}</span>
-					<span className="font-semibold text-xs">{formatTemperature(day.main.temp_max)}</span>
+				<div className="flex flex-col gap-1 text-xs">
+					<span>Min:{formatTemperature(day.main.temp_min)}</span>
+					<span>Max:{formatTemperature(day.main.temp_max)}</span>
 				</div>
 			</div>
 			<div className="flex flex-col items-center gap-0.5">

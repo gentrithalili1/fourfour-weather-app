@@ -32,10 +32,18 @@ export function Weather() {
 			<div className="relative z-10 flex min-h-screen flex-col gap-6 p-6 lg:p-8">
 				<Header />
 
-				<CityWeatherDetails cityWeather={cityWeatherDetails} />
+				<CityWeatherDetails
+					error={selectedCityCoords.error || cityWeatherQuery.error}
+					cityWeather={cityWeatherDetails}
+					isLoading={selectedCityCoords.isLoading || cityWeatherQuery.isLoading}
+				/>
 
 				<div className="mx-auto w-full max-w-3xl">
-					<CityForecast forecast={forecastData} />
+					<CityForecast
+						error={forecastQuery.error}
+						isLoading={forecastQuery.isLoading}
+						forecast={forecastData}
+					/>
 				</div>
 
 				<RecentSearch />

@@ -1,12 +1,16 @@
 import { Droplets, Sunrise, Sunset, Thermometer, Wind } from "lucide-react";
 
+import { ErrorMessage } from "@/core/components/shared/error-message";
+import { LoadingData } from "@/core/components/shared/loading-data";
 import { WeatherIcon } from "@/core/components/shared/weather-icon";
 import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 import type { CityWeather } from "@/core/types/weather";
 import { formatSunTime } from "@/core/utils/dates";
 
 type CityWeatherDetailsProps = {
+	error?: Error | null;
 	cityWeather?: CityWeather;
+	isLoading?: boolean;
 };
 
 export function CityWeatherDetails(props: CityWeatherDetailsProps) {
@@ -15,9 +19,17 @@ export function CityWeatherDetails(props: CityWeatherDetailsProps) {
 
 	return (
 		<div
-			aria-label={`Weather in ${cityWeather?.name}, ${cityWeather?.sys.country}`}
+			aria-label={
+				props.cityWeather
+					? `Weather in ${cityWeather?.name}, ${cityWeather?.sys.country}`
+					: undefined
+			}
 			className="flex flex-1 flex-col items-center justify-center py-5">
-			{cityWeather ? (
+			{props.isLoading && !cityWeather ? (
+				<LoadingData message="Loading weather..." />
+			) : props.error ? (
+				<ErrorMessage error={props.error} />
+			) : cityWeather ? (
 				<div
 					key={cityWeather.id}
 					className="flex flex-col items-center gap-4 text-center animate-in fade-in slide-in-from-bottom-2 duration-300">

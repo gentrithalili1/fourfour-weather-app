@@ -7,6 +7,8 @@ import { useRecentSearchQuery } from "@/features/weather/lib/hooks/use-recent-se
 import { useCityGeocodingStore } from "@/features/weather/lib/stores/city-geocoding-store";
 import { transformCityWeatherToCityGeocoding } from "@/features/weather/lib/utils/data-transform";
 
+import { ErrorMessage } from "@/core/components/shared/error-message";
+import { LoadingData } from "@/core/components/shared/loading-data";
 import { Button } from "@/core/components/ui/button";
 import { Spinner } from "@/core/components/ui/spinner";
 import { useErrorHandler } from "@/core/hooks/use-error-handler";
@@ -69,7 +71,9 @@ export function RecentSearch() {
 
 			<div aria-live="polite" aria-busy={recentSearchQuery.isLoading}>
 				{recentSearchQuery.isLoading ? (
-					<p className="text-sm">Loading recent searches…</p>
+					<LoadingData message="Loading recent searches..." />
+				) : recentSearchQuery.error ? (
+					<ErrorMessage error={recentSearchQuery.error} />
 				) : isEmpty ? (
 					<p className="text-sm">Search for cities to see them here.</p>
 				) : (

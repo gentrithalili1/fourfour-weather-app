@@ -16,12 +16,11 @@ type UseForecastQueryParams = {
 export const useForecastQuery = (params: UseForecastQueryParams) => {
 	return useQuery<ForecastResponse, Error>({
 		queryKey: forecastQueryKeys.coords({ lat: params.lat!, lon: params.lon! }),
-		queryFn: async () => {
-			return await weatherApi.fetchForecast({
+		queryFn: async () =>
+			weatherApi.fetchForecast({
 				lat: params.lat!,
 				lon: params.lon!,
-			});
-		},
+			}),
 		placeholderData: keepPreviousData,
 		enabled: params.lat != null && params.lon != null,
 	});

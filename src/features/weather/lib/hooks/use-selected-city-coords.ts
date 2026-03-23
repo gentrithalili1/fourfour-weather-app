@@ -9,6 +9,7 @@ export const useSelectedCityCoords = () => {
 	});
 
 	return {
+		error: currentUserLocation.error,
 		data: cityGeocodingStore.cityGeocoding ?? currentUserLocation.data,
 		isFetching: currentUserLocation.isFetching,
 		isLoading: currentUserLocation.isLoading,
