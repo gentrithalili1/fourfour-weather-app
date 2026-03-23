@@ -105,3 +105,7 @@ npm run test:e2e:ui
 - Query hooks are under `src/features/weather/lib/hooks`.
 - Run `npm run lint`, `npm run test:run`, and `npm run test:e2e` for a quick quality check.
 - If weather data is missing when running locally, verify `OPENWEATHER_API_KEY` in `.dev.vars`.
+
+### Live App
+
+https://fourfour-weather-app.gentrithalili11.workers.dev/
