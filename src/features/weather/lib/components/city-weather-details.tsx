@@ -1,7 +1,6 @@
 import { Droplets, Sunrise, Sunset, Thermometer, Wind } from "lucide-react";
 
-import { getOwIconSrc } from "@/features/weather/lib/utils/get-ow-icon-src";
-
+import { WeatherIcon } from "@/core/components/shared/weather-icon";
 import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 import type { CityWeather } from "@/core/types/weather";
 import { formatSunTime } from "@/core/utils/dates";
@@ -23,8 +22,8 @@ export function CityWeatherDetails(props: CityWeatherDetailsProps) {
 					key={cityWeather.id}
 					className="flex flex-col items-center gap-4 text-center animate-in fade-in slide-in-from-bottom-2 duration-300">
 					<div className="rounded-2xl bg-white/20 p-6 backdrop-blur-md">
-						<img
-							src={getOwIconSrc(cityWeather.weather[0].icon)}
+						<WeatherIcon
+							icon={cityWeather.weather[0].icon}
 							alt={cityWeather.weather[0].description}
 							className="size-18 lg:size-20 drop-shadow-lg"
 						/>

@@ -1,7 +1,6 @@
 import type { ForecastItem } from "@core/types/weather";
 
-import { getOwIconSrc } from "@/features/weather/lib/utils/get-ow-icon-src";
-
+import { WeatherIcon } from "@/core/components/shared/weather-icon";
 import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 import { formatForecastDay, isToday } from "@/core/utils/dates";
 
@@ -14,7 +13,9 @@ export function CityForecastDayCard({ day, timezone }: CityForecastDayCardProps)
 	const formatTemperature = useFormatTemperature();
 
 	return (
-		<div role="listitem" className="flex min-w-0 flex-col gap-1.5 rounded-lg bg-white/10 p-3 text-foreground">
+		<div
+			role="listitem"
+			className="flex min-w-0 flex-col gap-1.5 rounded-lg bg-white/10 p-3 text-foreground">
 			<div className="flex items-center justify-between ">
 				<span className="text-xs font-semibold">
 					{isToday(day.dt, timezone) ? "Today" : formatForecastDay(day.dt, timezone)}
@@ -25,8 +26,8 @@ export function CityForecastDayCard({ day, timezone }: CityForecastDayCardProps)
 				</div>
 			</div>
 			<div className="flex flex-col items-center gap-0.5">
-				<img
-					src={getOwIconSrc(day.weather[0].icon)}
+				<WeatherIcon
+					icon={day.weather[0].icon}
 					alt={day.weather[0].description}
 					className="size-11 drop-shadow sm:size-12"
 				/>
