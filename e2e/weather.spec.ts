@@ -19,6 +19,18 @@ test("search and select city shows weather details", async ({ page }) => {
 	await expect(weatherSection.getByText(/clear sky/i)).toBeVisible();
 });
 
+test("click recent search shows weather details", async ({ page }) => {
+	setupWeatherApiMocks(page, [mockCityWeather]);
+	await page.goto("/");
+
+	await page.getByRole("button", { name: /Select Oslo, NO/i }).click();
+
+	const weatherSection = page.locator('[aria-label="Weather in Oslo, NO"]');
+	await expect(weatherSection).toBeVisible({ timeout: 5000 });
+	await expect(weatherSection.getByText("Oslo, NO")).toBeVisible();
+	await expect(weatherSection.getByText(/clear sky/i)).toBeVisible();
+});
+
 test("clear recent search removes cities", async ({ page }) => {
 	setupWeatherApiMocks(page, [mockCityWeather]);
 	await page.goto("/");
