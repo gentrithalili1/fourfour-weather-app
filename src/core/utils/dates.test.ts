@@ -1,5 +1,5 @@
+import { formatForecastDay, formatLocalTime, formatSunTime, isToday } from "./dates";
 import { describe, expect, it, vi } from "vitest";
-import { formatForecastDay, formatSunTime, isToday } from "./dates";
 
 describe("formatSunTime", () => {
 	it("formats unix timestamp with timezone offset", () => {
@@ -12,6 +12,14 @@ describe("formatSunTime", () => {
 		const unix = 0;
 		const tzOffset = 3600;
 		expect(formatSunTime(unix, tzOffset)).toBe("01:00 AM");
+	});
+});
+
+describe("formatLocalTime", () => {
+	it("formats unix timestamp with timezone offset", () => {
+		const unix = 0;
+		const tzOffset = 0;
+		expect(formatLocalTime(unix, tzOffset)).toBe("12:00 AM");
 	});
 });
 

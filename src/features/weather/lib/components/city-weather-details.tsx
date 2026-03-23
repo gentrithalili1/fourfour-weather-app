@@ -1,11 +1,11 @@
-import { Droplets, Sunrise, Sunset, Thermometer, Wind } from "lucide-react";
+import { Clock3, Droplets, Sunrise, Sunset, Thermometer, Wind } from "lucide-react";
 
 import { ErrorMessage } from "@/core/components/shared/error-message";
 import { LoadingData } from "@/core/components/shared/loading-data";
 import { WeatherIcon } from "@/core/components/shared/weather-icon";
 import { useFormatTemperature } from "@/core/hooks/use-format-temperature";
 import type { CityWeather } from "@/core/types/weather";
-import { formatSunTime } from "@/core/utils/dates";
+import { formatLocalTime, formatSunTime } from "@/core/utils/dates";
 
 type CityWeatherDetailsProps = {
 	error?: Error | null;
@@ -48,6 +48,10 @@ export function CityWeatherDetails(props: CityWeatherDetailsProps) {
 					</p>
 					<p className="text-2xl capitalize">{cityWeather.weather[0].description}</p>
 					<div className="flex flex-wrap justify-center gap-6 text-md ">
+						<span className="flex items-center gap-1.5">
+							<Clock3 className="size-4" aria-hidden />
+							Local time {formatLocalTime(cityWeather.dt, cityWeather.timezone)}
+						</span>
 						<span className="flex items-center gap-1.5">
 							<Thermometer className="size-4" aria-hidden />
 							Feels like {formatTemperature(cityWeather.main.feels_like)}
