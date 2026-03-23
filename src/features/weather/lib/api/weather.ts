@@ -1,5 +1,5 @@
 import { apiRequest } from "@core/api/api-request";
-import type { CityBackground } from "@core/types/common";
+import type { CityBackground, WithOkResponse } from "@core/types/common";
 import type { CityGeocoding, CityWeather, Coord, ForecastResponse } from "@core/types/weather";
 
 const getRecentCityWeatherSearch = async () => {
@@ -7,11 +7,11 @@ const getRecentCityWeatherSearch = async () => {
 };
 
 const clearRecentSearch = async () => {
-	return apiRequest.delete<{ ok: boolean }>(`/recent`);
+	return apiRequest.delete<WithOkResponse>(`/recent`);
 };
 
 const deleteRecentSearchItem = async (id: number) => {
-	return apiRequest.delete<{ ok: boolean }>(`/recent`, { params: { id } });
+	return apiRequest.delete<WithOkResponse>(`/recent`, { params: { id } });
 };
 
 const fetchCityWeather = async (params: Coord) => {
@@ -23,7 +23,7 @@ const fetchForecast = async (params: Coord) => {
 };
 
 const addToRecentSearch = async (cityWeather: CityWeather) => {
-	return apiRequest.post<{ ok: boolean }>(`/recent`, cityWeather);
+	return apiRequest.post<WithOkResponse>(`/recent`, cityWeather);
 };
 
 const searchCityGeocoding = async (query: string) => {
