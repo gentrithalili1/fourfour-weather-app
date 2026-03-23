@@ -14,11 +14,9 @@ export function WeatherBackground(props: WeatherBackgroundProps) {
 	const backgroundStore = useBackgroundStore();
 	const isPhoto = backgroundStore.type === "image";
 	const isGradient = backgroundStore.type === "gradient";
-
-	const weatherDescription = props.cityWeather?.weather[0].description;
-	const backgroundQuery = useCityBackgroundQuery(
-		isPhoto && weatherDescription ? weatherDescription : undefined
-	);
+	const backgroundQuery = useCityBackgroundQuery({
+		cityWeather: isPhoto ? props.cityWeather : undefined,
+	});
 	const { imageUrl, photographer } = backgroundQuery.data ?? {};
 
 	const gradient = props.cityWeather ? getWeatherGradient(props.cityWeather) : "";
@@ -37,6 +35,7 @@ export function WeatherBackground(props: WeatherBackgroundProps) {
 						className="absolute inset-0 size-full object-cover scale-105 blur-[2px] opacity-80"
 					/>
 					<div className="absolute inset-0 bg-black/20" />
+
 					{photographer && (
 						<a
 							href={photographer.url}
