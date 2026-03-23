@@ -19,6 +19,7 @@ import { Button } from "@/core/components/ui/button";
 import { Field, FieldDescription, FieldLabel } from "@/core/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/core/components/ui/input-group";
 import { useDebounce } from "@/core/hooks/use-debounce";
+import { useErrorHandler } from "@/core/hooks/use-error-handler";
 import { useBackgroundStore } from "@/core/stores/background-store";
 import type { CityGeocoding } from "@/core/types/weather";
 import { cn } from "@/core/utils/shadcn-utils";
@@ -31,6 +32,7 @@ export function SearchCityCombobox() {
 	const debounced = useDebounce(search.trim(), 300);
 	const searchCityGeocodingQuery = useSearchCityGeocodingQuery(debounced);
 	const cityGeocodingStore = useCityGeocodingStore();
+	const errorHandler = useErrorHandler();
 	const addToRecentSearchMutation = useAddToRecentSearchMutation();
 	const backgroundType = useBackgroundStore((state) => state.type);
 	const isDynamicBackground = backgroundType === "image" || backgroundType === "gradient";
@@ -105,10 +107,15 @@ export function SearchCityCombobox() {
 		setSearch("");
 		setOpen(false);
 		cityGeocodingStore.setCityGeocoding(city);
-		addToRecentSearchMutation.mutate({
-			lat: city.lat,
-			lon: city.lon,
-		});
+		addToRecentSearchMutation.mutate(
+			{
+				lat: city.lat,
+				lon: city.lon,
+			},
+			{
+				onError: (error) => errorHandler.handleError({ error }),
+			}
+		);
 	};
 
 	return (

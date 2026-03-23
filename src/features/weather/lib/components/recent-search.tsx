@@ -9,6 +9,7 @@ import { transformCityWeatherToCityGeocoding } from "@/features/weather/lib/util
 
 import { Button } from "@/core/components/ui/button";
 import { Spinner } from "@/core/components/ui/spinner";
+import { useErrorHandler } from "@/core/hooks/use-error-handler";
 import type { CityWeather } from "@/core/types/weather";
 import { scrollToTop } from "@/core/utils/scroll";
 
@@ -17,10 +18,27 @@ export function RecentSearch() {
 	const clearRecentMutation = useClearRecentSearchMutation();
 	const deleteItemMutation = useDeleteRecentSearchItemMutation();
 	const cityGeocodingStore = useCityGeocodingStore();
+	const errorHandler = useErrorHandler();
 
 	const handleSelect = (city: CityWeather) => {
 		scrollToTop();
 		cityGeocodingStore.setCityGeocoding(transformCityWeatherToCityGeocoding(city));
+	};
+
+	const handleDelete = async (id: number) => {
+		try {
+			await deleteItemMutation.mutateAsync(id);
+		} catch (error) {
+			errorHandler.handleError({ error });
+		}
+	};
+
+	const handleClearAll = async () => {
+		try {
+			await clearRecentMutation.mutateAsync();
+		} catch (error) {
+			errorHandler.handleError({ error });
+		}
 	};
 
 	const cities = recentSearchQuery.data ?? [];
@@ -37,7 +55,7 @@ export function RecentSearch() {
 					<Button
 						variant="outline"
 						aria-label="Clear recent searches"
-						onClick={() => clearRecentMutation.mutate()}
+						onClick={handleClearAll}
 						disabled={clearRecentMutation.isPending}>
 						{clearRecentMutation.isPending ? (
 							<Spinner className="size-3.5" aria-hidden />
@@ -67,7 +85,7 @@ export function RecentSearch() {
 									deleteItemMutation.isPending && deleteItemMutation.variables === city.id
 								}
 								onSelect={handleSelect}
-								onDelete={(id) => deleteItemMutation.mutate(id)}
+								onDelete={handleDelete}
 							/>
 						))}
 					</ul>
