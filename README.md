@@ -1,7 +1,8 @@
 # FourFour Weather App
 
 A weather web app built with React and TypeScript, powered by Cloudflare Workers.
-(Test assignment app for Senior TS Developer at Manta)
+(Test assignment app for Senior TS Developer at Manta).
+Bootstrapped using [create-cloudflare](https://www.npmjs.com/package/create-cloudflare).
 
 ## Features
 
