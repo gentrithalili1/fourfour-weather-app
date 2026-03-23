@@ -10,6 +10,10 @@ const clearRecentSearch = async () => {
 	return apiRequest.delete<{ ok: boolean }>(`/recent`);
 };
 
+const deleteRecentSearchItem = async (id: number) => {
+	return apiRequest.delete<{ ok: boolean }>(`/recent`, { params: { id } });
+};
+
 const fetchCityWeather = async (params: Coord) => {
 	return apiRequest.get<CityWeather>(`/fetch`, { params });
 };
@@ -38,4 +42,5 @@ export const weatherApi = {
 	addToRecentSearch,
 	getRecentCityWeatherSearch,
 	clearRecentSearch,
+	deleteRecentSearchItem,
 };

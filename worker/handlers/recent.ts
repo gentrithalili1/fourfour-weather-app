@@ -10,5 +10,9 @@ export async function handleRecent(
 			body: request.body,
 		});
 	}
-	return stub.fetch("https://do/api/recent", { method: request.method });
+	const url = new URL(request.url);
+	const doUrl = url.searchParams.has("id")
+		? `https://do/api/recent?id=${url.searchParams.get("id")}`
+		: "https://do/api/recent";
+	return stub.fetch(doUrl, { method: request.method });
 }

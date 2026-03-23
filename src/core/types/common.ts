@@ -8,3 +8,7 @@ export type CityBackground = {
 	imageUrl: string | null;
 	photographer: { name: string; url: string } | null;
 };
+
+export type WithOkResponse = {
+	ok: boolean;
+};

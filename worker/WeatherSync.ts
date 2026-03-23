@@ -22,8 +22,17 @@ export class WeatherSync extends DurableObject<Env> {
 		}
 
 		if (url.pathname === "/api/recent" && request.method === "DELETE") {
-			this.recent = [];
-			await this.ctx.storage.put("recent", this.recent);
+			const id = url.searchParams.get("id");
+			if (id) {
+				const numericId = Number(id);
+				if (!Number.isNaN(numericId)) {
+					this.recent = this.recent.filter((c) => c.id !== numericId);
+					await this.ctx.storage.put("recent", this.recent);
+				}
+			} else {
+				this.recent = [];
+				await this.ctx.storage.put("recent", this.recent);
+			}
 			return Response.json({ ok: true });
 		}
 
