@@ -43,3 +43,15 @@ test("clear recent search removes cities", async ({ page }) => {
 	await expect(page.getByText("Search for cities to see them here")).toBeVisible();
 	await expect(page.getByRole("button", { name: /Clear recent searches/i })).not.toBeVisible();
 });
+
+test("delete single recent search item removes only that city", async ({ page }) => {
+	setupWeatherApiMocks(page, [mockCityWeather]);
+
+	await page.goto("/");
+
+	await expect(page.getByRole("button", { name: /Select Oslo, NO/i })).toBeVisible();
+
+	await page.getByRole("button", { name: /Remove Oslo, NO from recent searches/i }).click();
+
+	await expect(page.getByRole("button", { name: /Select Oslo, NO/i })).not.toBeVisible();
+});
