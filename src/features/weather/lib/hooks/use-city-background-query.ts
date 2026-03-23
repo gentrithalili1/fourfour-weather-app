@@ -1,5 +1,5 @@
 import type { CityBackground } from "@core/types/common";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 import { weatherApi } from "@/features/weather/lib/api/weather";
 
@@ -19,13 +19,15 @@ export const useCityBackgroundQuery = (params?: UseCityBackgroundQueryParams) =>
 	const localHour = cityWeather
 		? new Date((cityWeather?.dt + cityWeather?.timezone) * 1000).getUTCHours()
 		: undefined;
+
 	const dayPart = localHour ? (localHour >= 6 && localHour < 18 ? "day" : "night") : undefined;
 	const description = cityWeather?.weather[0]?.description?.trim() || "weather";
 
-	const imageQuery = `${dayPart} ${description}`;
+	const imageQuery = `${dayPart ?? ""} ${description ?? ""}`.trim();
 	return useQuery<CityBackground, Error>({
 		queryKey: cityBackgroundQueryKeys.city(imageQuery),
 		queryFn: () => weatherApi.fetchCityBackground(imageQuery),
+		placeholderData: keepPreviousData,
 		enabled: Boolean(cityWeather && imageQuery),
 	});
 };

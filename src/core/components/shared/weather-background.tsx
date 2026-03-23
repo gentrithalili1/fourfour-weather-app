@@ -21,34 +21,35 @@ export function WeatherBackground(props: WeatherBackgroundProps) {
 
 	const gradient = props.cityWeather ? getWeatherGradient(props.cityWeather) : "";
 
-	if (!isPhoto && !isGradient) {
-		return <div className="fixed inset-0 -z-10 bg-muted" aria-hidden />;
+	if ((!isPhoto && !isGradient) || backgroundQuery.isLoading) {
+		return null;
 	}
 
 	return (
-		<div className={cn("fixed inset-0 -z-10 bg-linear-to-br", gradient)} aria-hidden>
-			{imageUrl && isPhoto && (
-				<>
-					<img
-						src={imageUrl}
-						alt=""
-						className="absolute inset-0 size-full object-cover scale-105 blur-[2px] opacity-80"
-					/>
-					<div className="absolute inset-0 bg-black/20" />
+		<>
+			<div className={cn("fixed inset-0 -z-10 bg-linear-to-br", gradient)} aria-hidden>
+				{imageUrl && isPhoto && (
+					<>
+						<div
+							className="absolute inset-0 scale-105 blur-[2px] opacity-80 bg-cover bg-center bg-no-repeat"
+							style={{ backgroundImage: `url(${imageUrl})` }}
+						/>
+						<div className="pointer-events-none absolute inset-0 bg-black/20" />
+					</>
+				)}
 
-					{photographer && (
-						<a
-							href={photographer.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="absolute bottom-3 right-3 z-20 text-xs text-white/70 transition hover:text-white">
-							Photo by {photographer.name} on Unsplash
-						</a>
-					)}
-				</>
+				<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.15),transparent)]" />
+			</div>
+
+			{imageUrl && isPhoto && photographer && (
+				<a
+					href={photographer.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="fixed bottom-3 right-3 z-20 text-xs text-white/70 transition hover:text-white">
+					Photo by {photographer.name} on Unsplash
+				</a>
 			)}
-
-			<div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.15),transparent)]" />
-		</div>
+		</>
 	);
 }
