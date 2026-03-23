@@ -151,18 +151,27 @@ export function SearchCityCombobox() {
 						<InputGroupAddon align="inline-start">
 							<Search
 								aria-hidden
-								className={isDynamicBackground ? "text-white" : "text-foreground"}
+								className={cn("size-4", isDynamicBackground ? "text-white" : "text-foreground")}
 							/>
 						</InputGroupAddon>
 
 						<InputGroupAddon align="inline-end">
 							{searchCityGeocodingQuery.isLoading && search.length > 0 && (
-								<Loader2 className="animate-spin" aria-hidden />
+								<Loader2
+									aria-hidden
+									className={cn(
+										"animate-spin",
+										isDynamicBackground ? "text-white" : "text-foreground"
+									)}
+								/>
 							)}
 
 							{!searchCityGeocodingQuery.isLoading && debounced.length > 0 && (
 								<Button variant="ghost" size="icon-xs" onClick={handleClearSearch}>
-									<X aria-hidden />
+									<X
+										aria-hidden
+										className={isDynamicBackground ? "text-white" : "text-foreground"}
+									/>
 								</Button>
 							)}
 						</InputGroupAddon>
